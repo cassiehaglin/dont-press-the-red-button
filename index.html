@@ -1,0 +1,3257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#070707">
+
+<title>Don't Press the Red Button</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #050505;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  overscroll-behavior: none;
+}
+
+body {
+  user-select: none;
+  touch-action: manipulation;
+}
+
+button {
+  font: inherit;
+}
+
+#game {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 500px;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at center,
+      #1d1d1d 0%,
+      #0b0b0b 50%,
+      #000 100%
+    );
+}
+
+
+/* TOP BAR */
+
+#topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  z-index: 50;
+}
+
+#stats {
+  display: flex;
+  gap: 20px;
+
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+
+  color: #888;
+}
+
+.stat strong {
+  display: block;
+  color: white;
+  font-size: 19px;
+  letter-spacing: 0;
+  margin-top: 2px;
+}
+
+#topButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.topButton {
+  min-width: 46px;
+  height: 46px;
+
+  border-radius: 14px;
+  border: 1px solid #333;
+
+  background: #151515;
+  color: white;
+
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#endlessTop {
+  display: none;
+}
+
+
+/* TEXT */
+
+#textArea {
+  position: absolute;
+
+  top: 15%;
+  left: 6%;
+
+  width: 88%;
+
+  text-align: center;
+  pointer-events: none;
+
+  z-index: 30;
+}
+
+#message {
+  margin: 0;
+
+  min-height: 75px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: clamp(22px, 6vw, 34px);
+  font-weight: 900;
+  line-height: 1.15;
+
+  transition:
+    opacity .2s,
+    transform .2s;
+}
+
+#subMessage {
+  min-height: 24px;
+
+  color: #999;
+
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+
+/* PLAY AREA */
+
+#playArea {
+  position: absolute;
+
+  left: 4%;
+  top: 34%;
+
+  width: 92%;
+  height: 61%;
+
+  overflow: hidden;
+
+  border-radius: 25px;
+}
+
+
+/* THE BUTTON */
+
+#redButton {
+
+  --size: 170px;
+
+  position: absolute;
+
+  left: 50%;
+  top: 48%;
+
+  width: var(--size);
+  height: var(--size);
+
+  transform:
+    translate(-50%, -50%);
+
+  border: none;
+  border-radius: 50%;
+
+  color: white;
+
+  font-size: 20px;
+  font-weight: 1000;
+  line-height: 1.05;
+
+  white-space: pre-line;
+
+  background:
+
+    radial-gradient(
+      circle at 35% 28%,
+      #ff7777,
+      #ff2929 18%,
+      #df0c0c 48%,
+      #970000 78%,
+      #620000
+    );
+
+  box-shadow:
+
+    0 13px 0 #570000,
+
+    0 19px 30px
+    rgba(0,0,0,.65),
+
+    0 0 35px
+    rgba(255,0,0,.25),
+
+    inset 0 4px 8px
+    rgba(255,255,255,.2);
+
+  z-index: 15;
+
+  transition:
+
+    width .25s,
+    height .25s,
+
+    left .3s,
+    top .3s,
+
+    opacity .2s,
+
+    filter .2s;
+}
+
+
+#redButton:active {
+
+  transform:
+    translate(-50%, -50%)
+    translateY(8px)
+    scale(.97);
+
+  box-shadow:
+
+    0 5px 0 #570000,
+
+    0 10px 15px
+    rgba(0,0,0,.6);
+}
+
+
+.rotate {
+  animation:
+    rotateButton 1s linear infinite;
+}
+
+
+@keyframes rotateButton {
+
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+}
+
+
+.pulse {
+
+  animation:
+    pulseButton .8s
+    ease-in-out infinite;
+
+}
+
+
+@keyframes pulseButton {
+
+  0%, 100% {
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.08);
+  }
+}
+
+
+.hiddenButton {
+
+  opacity: 0;
+
+  pointer-events: none;
+
+}
+
+
+.angry {
+
+  filter:
+    saturate(1.6)
+    brightness(1.15);
+
+}
+
+
+/* FAKE BUTTONS */
+
+.fakeButton {
+
+  position: absolute;
+
+  width: 82px;
+  height: 82px;
+
+  border: none;
+  border-radius: 50%;
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  background:
+
+    radial-gradient(
+      circle at 35% 30%,
+      #ff6666,
+      #d80b0b 50%,
+      #720000
+    );
+
+  box-shadow:
+    0 7px 0 #4d0000;
+
+  z-index: 8;
+}
+
+
+/* TOAST */
+
+#toast {
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 20px;
+
+  transform:
+    translateX(-50%)
+    translateY(20px);
+
+  max-width: 85%;
+
+  padding:
+    10px 14px;
+
+  border-radius: 12px;
+
+  border:
+    1px solid #333;
+
+  background:
+    rgba(15,15,15,.95);
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  text-align: center;
+
+  opacity: 0;
+
+  transition:
+    .2s;
+
+  z-index: 100;
+
+  pointer-events: none;
+}
+
+
+#toast.show {
+
+  opacity: 1;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+
+}
+
+
+/* WARNING */
+
+#warning {
+
+  position: absolute;
+
+  left: 50%;
+  top: 52%;
+
+  transform:
+    translate(-50%, -50%);
+
+  width: min(86%, 370px);
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  border:
+    2px solid #d31c1c;
+
+  background:
+    #190909;
+
+  text-align: center;
+
+  z-index: 70;
+}
+
+
+#warning.hidden {
+
+  display: none;
+
+}
+
+
+#warning strong {
+
+  display: block;
+
+  color: #ff5b5b;
+
+  font-size: 20px;
+
+  margin-bottom: 8px;
+
+}
+
+
+#countdown {
+
+  display: block;
+
+  font-size: 45px;
+  font-weight: 1000;
+
+  margin-top: 8px;
+
+}
+
+
+/* OVERLAYS */
+
+.overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  padding: 22px;
+
+  background:
+    rgba(0,0,0,.94);
+
+  z-index: 120;
+}
+
+
+.overlay.hidden {
+
+  display: none;
+
+}
+
+
+.card {
+
+  width:
+    min(92vw, 430px);
+
+  padding:
+    25px 20px;
+
+  border:
+
+    1px solid #333;
+
+  border-radius:
+    22px;
+
+  background:
+    #101010;
+
+  text-align:
+    center;
+}
+
+
+.eyebrow {
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  letter-spacing: 2px;
+
+  color: #999;
+
+  text-transform:
+    uppercase;
+
+}
+
+
+.card h2 {
+
+  margin:
+    12px 0;
+
+  font-size:
+    clamp(28px, 8vw, 42px);
+
+}
+
+
+.card p {
+
+  color:
+    #bbb;
+
+  line-height:
+    1.45;
+
+}
+
+
+.achievement {
+
+  margin:
+    20px 0;
+
+  padding:
+    16px;
+
+  border:
+    1px solid #4e1818;
+
+  border-radius:
+    16px;
+
+  background:
+    #190b0b;
+
+}
+
+
+.achievement small {
+
+  color:
+    #d58484;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1.5px;
+
+}
+
+
+.achievement strong {
+
+  display:
+    block;
+
+  margin-top:
+    8px;
+
+  font-size:
+    19px;
+
+}
+
+
+.actionButton {
+
+  width:
+    100%;
+
+  min-height:
+    50px;
+
+  margin-top:
+    10px;
+
+  border-radius:
+    14px;
+
+  border:
+    1px solid #333;
+
+  background:
+    #1c1c1c;
+
+  color:
+    white;
+
+  font-size:
+    16px;
+
+  font-weight:
+    900;
+
+}
+
+
+.actionButton.red {
+
+  background:
+    #b60d0d;
+
+  border-color:
+    #e12727;
+
+}
+
+
+/* EFFECTS */
+
+.shake {
+
+  animation:
+    shake .4s linear;
+
+}
+
+
+@keyframes shake {
+
+  0%,100% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform:
+      translate(-9px,5px);
+  }
+
+  40% {
+    transform:
+      translate(8px,-5px);
+  }
+
+  60% {
+    transform:
+      translate(-7px,-4px);
+  }
+
+  80% {
+    transform:
+      translate(7px,5px);
+  }
+
+}
+
+
+.redFlash {
+
+  animation:
+    redFlash .6s;
+
+}
+
+
+@keyframes redFlash {
+
+  0%,100% {
+    background-color:
+      transparent;
+  }
+
+  40% {
+    background-color:
+      rgba(255,0,0,.8);
+  }
+
+}
+
+
+.glitch {
+
+  animation:
+    glitch .25s steps(2) 5;
+
+}
+
+
+@keyframes glitch {
+
+  0% {
+    filter: none;
+  }
+
+  33% {
+    filter:
+      invert(1);
+  }
+
+  66% {
+    filter:
+      hue-rotate(100deg)
+      contrast(2);
+  }
+
+  100% {
+    filter: none;
+  }
+
+}
+
+
+/* CONFETTI */
+
+.particle {
+
+  position:
+    absolute;
+
+  width:
+    9px;
+
+  height:
+    9px;
+
+  z-index:
+    200;
+
+  pointer-events:
+    none;
+
+  animation:
+    fly 1s ease-out forwards;
+
+}
+
+
+@keyframes fly {
+
+  from {
+
+    opacity:
+      1;
+
+    transform:
+      translate(0,0)
+      rotate(0);
+
+  }
+
+  to {
+
+    opacity:
+      0;
+
+    transform:
+      translate(
+        var(--x),
+        var(--y)
+      )
+      rotate(540deg);
+
+  }
+
+}
+
+
+/* SMALL PHONES */
+
+@media (max-height: 620px) {
+
+  #textArea {
+    top: 12%;
+  }
+
+  #playArea {
+    top: 31%;
+    height: 65%;
+  }
+
+  #redButton {
+    --size: 145px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+  <div id="topbar">
+
+    <div id="stats">
+
+      <div class="stat">
+
+        PRESSES
+
+        <strong id="pressCount">
+          0
+        </strong>
+
+      </div>
+
+      <div class="stat">
+
+        BEST
+
+        <strong id="highScore">
+          0
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div id="topButtons">
+
+      <button
+        id="endlessTop"
+        class="topButton"
+        type="button">
+
+        ∞
+
+      </button>
+
+      <button
+        id="soundButton"
+        class="topButton"
+        type="button">
+
+        🔊
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div id="textArea">
+
+    <h1 id="message">
+
+      Whatever you do…
+      don’t press the button.
+
+    </h1>
+
+    <div id="subMessage">
+
+      There is literally one rule.
+
+    </div>
+
+  </div>
+
+
+  <div id="playArea">
+
+    <button
+      id="redButton"
+      type="button">
+
+DO NOT
+PRESS
+
+    </button>
+
+  </div>
+
+
+  <div
+    id="warning"
+    class="hidden">
+
+    <strong id="warningTitle">
+
+      SYSTEM WARNING
+
+    </strong>
+
+    <div id="warningText">
+
+      Catastrophic button activity detected.
+
+    </div>
+
+    <span id="countdown"></span>
+
+  </div>
+
+
+  <div id="toast"></div>
+
+
+  <!-- FAKE GAME OVER -->
+
+  <div
+    id="fakeGameOver"
+    class="overlay hidden">
+
+    <div class="card">
+
+      <div class="eyebrow">
+        System Message
+      </div>
+
+      <h2>
+        GAME OVER
+      </h2>
+
+      <p>
+        You have successfully ruined everything.
+      </p>
+
+      <button
+        id="continueButton"
+        class="actionButton">
+
+        ...okay?
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- FINAL ENDING -->
+
+  <div
+    id="ending"
+    class="overlay hidden">
+
+    <div class="card">
+
+      <div class="eyebrow">
+        You did it.
+      </div>
+
+      <h2>
+        30 PRESSES.
+      </h2>
+
+      <p>
+
+        You pressed the button
+        30 times after being
+        specifically told not to.
+
+      </p>
+
+      <div class="achievement">
+
+        <small>
+
+          ACHIEVEMENT UNLOCKED
+
+        </small>
+
+        <strong>
+
+          ABSOLUTELY NO
+          SELF CONTROL
+
+        </strong>
+
+      </div>
+
+      <button
+        id="endlessButton"
+        class="actionButton red">
+
+        UNLOCK ENDLESS MODE
+
+      </button>
+
+      <button
+        id="restartButton"
+        class="actionButton">
+
+        Play Again
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- PLAY AGAIN JOKE -->
+
+  <div
+    id="playAgainJoke"
+    class="overlay hidden">
+
+    <div class="card">
+
+      <div class="eyebrow">
+        Request denied
+      </div>
+
+      <h2 id="jokeTitle">
+        No.
+      </h2>
+
+      <p id="jokeText">
+        You had your chance.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+(() => {
+
+"use strict";
+
+
+/* ELEMENTS */
+
+const game =
+document.getElementById("game");
+
+const playArea =
+document.getElementById("playArea");
+
+const redButton =
+document.getElementById("redButton");
+
+const message =
+document.getElementById("message");
+
+const subMessage =
+document.getElementById("subMessage");
+
+const pressCount =
+document.getElementById("pressCount");
+
+const highScoreDisplay =
+document.getElementById("highScore");
+
+const soundButton =
+document.getElementById("soundButton");
+
+const endlessTop =
+document.getElementById("endlessTop");
+
+const warning =
+document.getElementById("warning");
+
+const warningTitle =
+document.getElementById("warningTitle");
+
+const warningText =
+document.getElementById("warningText");
+
+const countdown =
+document.getElementById("countdown");
+
+const toast =
+document.getElementById("toast");
+
+const fakeGameOver =
+document.getElementById("fakeGameOver");
+
+const continueButton =
+document.getElementById("continueButton");
+
+const ending =
+document.getElementById("ending");
+
+const endlessButton =
+document.getElementById("endlessButton");
+
+const restartButton =
+document.getElementById("restartButton");
+
+const playAgainJoke =
+document.getElementById("playAgainJoke");
+
+const jokeTitle =
+document.getElementById("jokeTitle");
+
+const jokeText =
+document.getElementById("jokeText");
+
+
+/* STATE */
+
+let presses = 0;
+
+let endless = false;
+
+let locked = false;
+
+let movementTimer = null;
+
+let toastTimer = null;
+
+let audioContext = null;
+
+
+let highScore =
+Number(
+  localStorage.getItem(
+    "redButtonHighScore"
+  )
+  || 0
+);
+
+
+let soundOn =
+localStorage.getItem(
+  "redButtonSound"
+)
+!== "off";
+
+
+let endlessUnlocked =
+localStorage.getItem(
+  "redButtonEndless"
+)
+=== "yes";
+
+
+/* MESSAGES */
+
+const stageMessages = [
+
+["I literally told you not to.",
+ "That was not a suggestion."],
+
+["Okay.",
+ "So we’re doing this."],
+
+["Do you have a problem with authority?",
+ "Rhetorical question."],
+
+["Stop.",
+ "I mean it."],
+
+["I’m serious.",
+ "Put the phone down."],
+
+["Last warning.",
+ "Probably."],
+
+["You know what? Fine.",
+ "Enjoy the consequences."],
+
+["I had ONE rule.",
+ "One."],
+
+["Why are you like this?",
+ "No, really."],
+
+["You clearly cannot be trusted.",
+ "New strategy."],
+
+["DON’T—",
+ "Seriously?!"],
+
+["Fine. Chase it.",
+ "Maybe this will slow you down."],
+
+["Oh, you caught it.",
+ "Annoying."],
+
+["Too easy?",
+ "Let’s fix that."],
+
+["SYSTEM WARNING",
+ "Excessive button pressing detected."],
+
+["Okay. Nothing happened.",
+ "That was embarrassing."],
+
+["I’m running out of ideas here.",
+ "Please just leave."],
+
+["What if I make it tiny?",
+ "Good luck."],
+
+["Still here?",
+ "Unbelievable."],
+
+["I’m not mad.",
+ "I’m disappointed. Also mad."],
+
+["Pick a button. Any button.",
+ "Surely this will confuse you."],
+
+["NO. Wrong one.",
+ "Unless you found the real one."],
+
+["You weren’t supposed to get this far.",
+ "This is becoming a problem."],
+
+["I dare you.",
+ "Actually, don’t."],
+
+["Okay, I’m begging now.",
+ "Please. Have mercy."],
+
+["That’s it.",
+ "You broke the game."],
+
+["GAME OVER.",
+ "Happy now?"],
+
+["Wait.",
+ "Why are you still here?"],
+
+["One more press will destroy everything.",
+ "Definitely. Probably."],
+
+["...you actually did it.",
+ "Of course you did."]
+
+];
+
+
+/* BASIC UI */
+
+function updateUI() {
+
+  pressCount.textContent =
+  presses;
+
+  highScoreDisplay.textContent =
+  highScore;
+
+  soundButton.textContent =
+  soundOn
+  ? "🔊"
+  : "🔇";
+
+  endlessTop.style.display =
+  endlessUnlocked
+  ? "block"
+  : "none";
+
+}
+
+
+function setMessage(
+  main,
+  sub = ""
+) {
+
+  message.style.opacity =
+  "0";
+
+  message.style.transform =
+  "translateY(-5px)";
+
+
+  setTimeout(() => {
+
+    message.textContent =
+    main;
+
+    subMessage.textContent =
+    sub;
+
+    message.style.opacity =
+    "1";
+
+    message.style.transform =
+    "translateY(0)";
+
+  },120);
+
+}
+
+
+/* SOUND */
+
+function beep(
+  frequency = 150,
+  duration = .07,
+  type = "square"
+) {
+
+  if (!soundOn)
+  return;
+
+
+  try {
+
+    audioContext =
+    audioContext ||
+    new (
+      window.AudioContext ||
+      window.webkitAudioContext
+    )();
+
+
+    const oscillator =
+    audioContext.createOscillator();
+
+    const gain =
+    audioContext.createGain();
+
+
+    oscillator.type =
+    type;
+
+    oscillator.frequency.value =
+    frequency;
+
+    gain.gain.value =
+    .035;
+
+
+    oscillator.connect(gain);
+
+    gain.connect(
+      audioContext.destination
+    );
+
+
+    oscillator.start();
+
+
+    gain.gain
+    .exponentialRampToValueAtTime(
+
+      .0001,
+
+      audioContext.currentTime
+      + duration
+
+    );
+
+
+    oscillator.stop(
+
+      audioContext.currentTime
+      + duration
+
+    );
+
+  }
+
+  catch(error) {}
+
+}
+
+
+function errorSound() {
+
+  beep(
+    120,
+    .1,
+    "sawtooth"
+  );
+
+  setTimeout(() => {
+
+    beep(
+      80,
+      .12,
+      "sawtooth"
+    );
+
+  },80);
+
+}
+
+
+function victorySound() {
+
+  const notes =
+  [330,440,550,660];
+
+
+  notes.forEach(
+    (note,index) => {
+
+      setTimeout(() => {
+
+        beep(
+          note,
+          .16,
+          "sine"
+        );
+
+      },
+      index * 100);
+
+    }
+  );
+
+}
+
+
+/* VIBRATION */
+
+function vibrate(
+  pattern = 20
+) {
+
+  try {
+
+    if (
+      navigator.vibrate
+    ) {
+
+      navigator.vibrate(
+        pattern
+      );
+
+    }
+
+  }
+
+  catch(error) {}
+
+}
+
+
+/* EFFECT HELPERS */
+
+function showToast(
+  text,
+  duration = 1000
+) {
+
+  clearTimeout(
+    toastTimer
+  );
+
+
+  toast.textContent =
+  text;
+
+  toast.classList.add(
+    "show"
+  );
+
+
+  toastTimer =
+  setTimeout(() => {
+
+    toast.classList.remove(
+      "show"
+    );
+
+  },duration);
+
+}
+
+
+function shake() {
+
+  game.classList.remove(
+    "shake"
+  );
+
+  void game.offsetWidth;
+
+  game.classList.add(
+    "shake"
+  );
+
+
+  setTimeout(() => {
+
+    game.classList.remove(
+      "shake"
+    );
+
+  },500);
+
+}
+
+
+function flashRed() {
+
+  game.classList.remove(
+    "redFlash"
+  );
+
+  void game.offsetWidth;
+
+  game.classList.add(
+    "redFlash"
+  );
+
+
+  setTimeout(() => {
+
+    game.classList.remove(
+      "redFlash"
+    );
+
+  },700);
+
+}
+
+
+function glitch() {
+
+  game.classList.remove(
+    "glitch"
+  );
+
+  void game.offsetWidth;
+
+  game.classList.add(
+    "glitch"
+  );
+
+
+  setTimeout(() => {
+
+    game.classList.remove(
+      "glitch"
+    );
+
+  },1400);
+
+}
+
+
+/* RESET BUTTON */
+
+function resetButton() {
+
+  clearInterval(
+    movementTimer
+  );
+
+
+  movementTimer =
+  null;
+
+
+  redButton.className =
+  "";
+
+
+  redButton.style
+  .setProperty(
+    "--size",
+    "170px"
+  );
+
+
+  redButton.style.left =
+  "50%";
+
+  redButton.style.top =
+  "48%";
+
+
+  redButton.textContent =
+  "DO NOT\nPRESS";
+
+
+  clearFakeButtons();
+
+
+  warning.classList.add(
+    "hidden"
+  );
+
+}
+
+
+/* RANDOM BUTTON POSITION */
+
+function moveButton() {
+
+  const area =
+  playArea
+  .getBoundingClientRect();
+
+
+  const button =
+  redButton
+  .getBoundingClientRect();
+
+
+  const halfWidth =
+  Math.min(
+    button.width / 2,
+    area.width * .35
+  );
+
+
+  const halfHeight =
+  Math.min(
+    button.height / 2,
+    area.height * .35
+  );
+
+
+  const padding =
+  12;
+
+
+  const minimumX =
+  halfWidth + padding;
+
+
+  const maximumX =
+  Math.max(
+
+    minimumX,
+
+    area.width
+    - halfWidth
+    - padding
+
+  );
+
+
+  const minimumY =
+  halfHeight + padding;
+
+
+  const maximumY =
+  Math.max(
+
+    minimumY,
+
+    area.height
+    - halfHeight
+    - padding
+
+  );
+
+
+  const x =
+  minimumX
+  +
+  Math.random()
+  *
+  Math.max(
+    1,
+    maximumX
+    - minimumX
+  );
+
+
+  const y =
+  minimumY
+  +
+  Math.random()
+  *
+  Math.max(
+    1,
+    maximumY
+    - minimumY
+  );
+
+
+  redButton.style.left =
+  x + "px";
+
+  redButton.style.top =
+  y + "px";
+
+}
+
+
+/* RUNAWAY BUTTON */
+
+function runAway(
+  amount = 5,
+  speed = 550
+) {
+
+  clearInterval(
+    movementTimer
+  );
+
+
+  let moves =
+  0;
+
+
+  moveButton();
+
+
+  movementTimer =
+  setInterval(() => {
+
+    moveButton();
+
+    moves++;
+
+
+    if (
+      moves >= amount
+    ) {
+
+      clearInterval(
+        movementTimer
+      );
+
+      movementTimer =
+      null;
+
+
+      showToast(
+        "Fine. I'll stay still."
+      );
+
+    }
+
+  },speed);
+
+}
+
+
+/* FAKE BUTTONS */
+
+function clearFakeButtons() {
+
+  document
+  .querySelectorAll(
+    ".fakeButton"
+  )
+  .forEach(button => {
+
+    button.remove();
+
+  });
+
+}
+
+
+function makeFakeButtons(
+  amount = 6
+) {
+
+  clearFakeButtons();
+
+
+  const labels = [
+
+    "PRESS ME",
+    "WRONG",
+    "SAFE?",
+    "NOT IT",
+    "TRY ME",
+    "NOPE",
+    "TOTALLY SAFE"
+
+  ];
+
+
+  const area =
+  playArea
+  .getBoundingClientRect();
+
+
+  for (
+    let i = 0;
+    i < amount;
+    i++
+  ) {
+
+    const button =
+    document.createElement(
+      "button"
+    );
+
+
+    button.type =
+    "button";
+
+    button.className =
+    "fakeButton";
+
+    button.textContent =
+    labels[
+      i %
+      labels.length
+    ];
+
+
+    const size =
+    82;
+
+
+    button.style.left =
+    (
+      Math.random()
+      *
+      Math.max(
+        1,
+        area.width
+        - size
+      )
+    )
+    + "px";
+
+
+    button.style.top =
+    (
+      Math.random()
+      *
+      Math.max(
+        1,
+        area.height
+        - size
+      )
+    )
+    + "px";
+
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        errorSound();
+
+        vibrate(25);
+
+
+        const replies =
+        [
+          "Nope.",
+          "Wrong one.",
+          "Nice try.",
+          "That one does nothing."
+        ];
+
+
+        showToast(
+
+          replies[
+            Math.floor(
+              Math.random()
+              *
+              replies.length
+            )
+          ]
+
+        );
+
+      }
+    );
+
+
+    playArea.appendChild(
+      button
+    );
+
+  }
+
+
+  moveButton();
+
+}
+
+
+/* WARNING BOX */
+
+function showWarning(
+  title,
+  text,
+  useCountdown = false
+) {
+
+  warningTitle.textContent =
+  title;
+
+  warningText.textContent =
+  text;
+
+  countdown.textContent =
+  "";
+
+  warning.classList.remove(
+    "hidden"
+  );
+
+
+  errorSound();
+
+
+  if (!useCountdown) {
+
+    setTimeout(() => {
+
+      warning.classList.add(
+        "hidden"
+      );
+
+    },1500);
+
+
+    return;
+
+  }
+
+
+  locked =
+  true;
+
+
+  let number =
+  3;
+
+
+  countdown.textContent =
+  number;
+
+
+  const timer =
+  setInterval(() => {
+
+    number--;
+
+
+    if (
+      number > 0
+    ) {
+
+      countdown.textContent =
+      number;
+
+      beep(
+        150
+        +
+        number * 50
+      );
+
+    }
+
+    else {
+
+      clearInterval(
+        timer
+      );
+
+
+      countdown.textContent =
+      "0";
+
+
+      setTimeout(() => {
+
+        warning.classList.add(
+          "hidden"
+        );
+
+
+        locked =
+        false;
+
+
+        setMessage(
+
+          "...Nothing happened.",
+
+          "I may have oversold that."
+
+        );
+
+      },500);
+
+    }
+
+  },700);
+
+}
+
+
+/* CONFETTI */
+
+function confetti(
+  amount = 50
+) {
+
+  const rect =
+  game
+  .getBoundingClientRect();
+
+
+  const colors =
+  [
+    "#ffffff",
+    "#ff2929",
+    "#ffb62b",
+    "#63ddff"
+  ];
+
+
+  for (
+    let i = 0;
+    i < amount;
+    i++
+  ) {
+
+    const particle =
+    document.createElement(
+      "div"
+    );
+
+
+    particle.className =
+    "particle";
+
+
+    particle.style.left =
+    rect.width / 2
+    + "px";
+
+
+    particle.style.top =
+    rect.height * .48
+    + "px";
+
+
+    particle.style.background =
+    colors[
+      i %
+      colors.length
+    ];
+
+
+    particle.style
+    .setProperty(
+
+      "--x",
+
+      (
+        Math.random()
+        - .5
+      )
+      *
+      rect.width
+      *
+      .9
+      +
+      "px"
+
+    );
+
+
+    particle.style
+    .setProperty(
+
+      "--y",
+
+      (
+        Math.random()
+        - .6
+      )
+      *
+      rect.height
+      *
+      .7
+      +
+      "px"
+
+    );
+
+
+    game.appendChild(
+      particle
+    );
+
+
+    setTimeout(() => {
+
+      particle.remove();
+
+    },1200);
+
+  }
+
+}
+
+
+/* FAKE LOADING */
+
+function fakeLoading() {
+
+  locked =
+  true;
+
+
+  redButton
+  .classList.add(
+    "hiddenButton"
+  );
+
+
+  const lines = [
+
+    "Deleting consequences…",
+
+    "Rebuilding button…",
+
+    "Pretending this is fine…",
+
+    "Almost definitely done…"
+
+  ];
+
+
+  let index =
+  0;
+
+
+  setMessage(
+
+    "LOADING…",
+
+    lines[0]
+
+  );
+
+
+  const timer =
+  setInterval(() => {
+
+    index++;
+
+
+    if (
+      index <
+      lines.length
+    ) {
+
+      subMessage.textContent =
+      lines[index];
+
+      beep(
+        220
+        +
+        index * 30
+      );
+
+    }
+
+    else {
+
+      clearInterval(
+        timer
+      );
+
+
+      setTimeout(() => {
+
+        redButton
+        .classList.remove(
+          "hiddenButton"
+        );
+
+
+        locked =
+        false;
+
+
+        setMessage(
+
+          "Unfortunately, it still works.",
+
+          "Wonderful."
+
+        );
+
+      },400);
+
+    }
+
+  },550);
+
+}
+
+
+/* NORMAL STAGES */
+
+function stage(
+  number
+) {
+
+  clearInterval(
+    movementTimer
+  );
+
+
+  movementTimer =
+  null;
+
+
+  clearFakeButtons();
+
+
+  redButton.className =
+  "";
+
+
+  redButton.style
+  .setProperty(
+    "--size",
+    "170px"
+  );
+
+
+  redButton.textContent =
+  "DO NOT\nPRESS";
+
+
+  if (
+    stageMessages[
+      number - 1
+    ]
+  ) {
+
+    setMessage(
+
+      stageMessages[
+        number - 1
+      ][0],
+
+      stageMessages[
+        number - 1
+      ][1]
+
+    );
+
+  }
+
+
+  switch(number) {
+
+
+    case 4:
+
+      shake();
+
+      break;
+
+
+    case 6:
+
+      redButton
+      .classList.add(
+        "pulse"
+      );
+
+      break;
+
+
+    case 8:
+
+      flashRed();
+
+      vibrate(
+        [30,40,30]
+      );
+
+      break;
+
+
+    case 10:
+
+      redButton.textContent =
+      "NEW\nSTRATEGY";
+
+      break;
+
+
+    case 11:
+
+      moveButton();
+
+      break;
+
+
+    case 12:
+
+      runAway(
+        5,
+        560
+      );
+
+      break;
+
+
+    case 13:
+
+      redButton.style
+      .setProperty(
+        "--size",
+        "125px"
+      );
+
+      moveButton();
+
+      break;
+
+
+    case 14:
+
+      redButton.style
+      .setProperty(
+        "--size",
+        "215px"
+      );
+
+      redButton
+      .classList.add(
+        "rotate"
+      );
+
+      break;
+
+
+    case 15:
+
+      showWarning(
+
+        "SYSTEM WARNING",
+
+        "Catastrophic button activity detected.",
+
+        true
+
+      );
+
+      break;
+
+
+    case 16:
+
+      glitch();
+
+      break;
+
+
+    case 17:
+
+      redButton
+      .classList.add(
+        "angry"
+      );
+
+      moveButton();
+
+      break;
+
+
+    case 18:
+
+      redButton.style
+      .setProperty(
+        "--size",
+        "70px"
+      );
+
+      redButton.textContent =
+      "NO";
+
+      moveButton();
+
+      break;
+
+
+    case 19:
+
+      runAway(
+        7,
+        420
+      );
+
+      break;
+
+
+    case 20:
+
+      redButton.textContent =
+      "I AM\nMAD";
+
+      flashRed();
+
+      break;
+
+
+    case 21:
+
+      makeFakeButtons(
+        6
+      );
+
+      break;
+
+
+    case 22:
+
+      makeFakeButtons(
+        8
+      );
+
+      redButton.style
+      .setProperty(
+        "--size",
+        "95px"
+      );
+
+      break;
+
+
+    case 23:
+
+      redButton
+      .classList.add(
+        "rotate"
+      );
+
+      moveButton();
+
+      break;
+
+
+    case 24:
+
+      redButton.style
+      .setProperty(
+        "--size",
+        "64px"
+      );
+
+      redButton.textContent =
+      "DARE";
+
+      moveButton();
+
+      break;
+
+
+    case 25:
+
+      redButton
+      .classList.add(
+        "pulse"
+      );
+
+      redButton.textContent =
+      "PLEASE";
+
+      break;
+
+
+    case 26:
+
+      fakeLoading();
+
+      break;
+
+
+    case 27:
+
+      locked =
+      true;
+
+
+      redButton
+      .classList.add(
+        "hiddenButton"
+      );
+
+
+      setTimeout(() => {
+
+        fakeGameOver
+        .classList.remove(
+          "hidden"
+        );
+
+
+        locked =
+        false;
+
+      },500);
+
+      break;
+
+
+    case 28:
+
+      redButton
+      .classList.remove(
+        "hiddenButton"
+      );
+
+      moveButton();
+
+      shake();
+
+      break;
+
+
+    case 29:
+
+      showWarning(
+
+        "FINAL WARNING",
+
+        "One more press will definitely destroy everything."
+
+      );
+
+
+      redButton
+      .classList.add(
+        "angry",
+        "pulse"
+      );
+
+      break;
+
+
+    case 30:
+
+      finishGame();
+
+      break;
+
+  }
+
+}
+
+
+/* ENDING */
+
+function finishGame() {
+
+  locked =
+  true;
+
+
+  redButton
+  .classList.add(
+    "hiddenButton"
+  );
+
+
+  clearFakeButtons();
+
+
+  flashRed();
+
+  shake();
+
+  errorSound();
+
+
+  setTimeout(() => {
+
+    setMessage(
+
+      "You did it.",
+
+      ""
+
+    );
+
+  },700);
+
+
+  setTimeout(() => {
+
+    setMessage(
+
+      "You pressed it 30 times.",
+
+      "After being specifically told not to."
+
+    );
+
+  },1800);
+
+
+  setTimeout(() => {
+
+    endlessUnlocked =
+    true;
+
+
+    localStorage.setItem(
+
+      "redButtonEndless",
+
+      "yes"
+
+    );
+
+
+    updateUI();
+
+
+    confetti(
+      60
+    );
+
+
+    victorySound();
+
+
+    ending
+    .classList.remove(
+      "hidden"
+    );
+
+
+    locked =
+    false;
+
+  },3300);
+
+}
+
+
+/* ENDLESS MODE */
+
+function endlessEvent() {
+
+  clearFakeButtons();
+
+
+  redButton.className =
+  "";
+
+
+  redButton.style
+  .setProperty(
+    "--size",
+    "150px"
+  );
+
+
+  const messages = [
+
+    [
+      "Still pressing?",
+      "There is no prize."
+    ],
+
+    [
+      "This is a lifestyle now.",
+      "Apparently."
+    ],
+
+    [
+      "You could stop.",
+      "Just mentioning it."
+    ],
+
+    [
+      "I respect the commitment.",
+      "Not the decision."
+    ],
+
+    [
+      "We are way past reasonable.",
+      "Keep going, I guess."
+    ],
+
+    [
+      "Button addiction is real.",
+      "Source: you."
+    ],
+
+    [
+      "This number is getting embarrassing.",
+      "For both of us."
+    ],
+
+    [
+      "I have accepted my fate.",
+      "Press away."
+    ],
+
+    [
+      "Why is this still entertaining?",
+      "Actually, don't answer that."
+    ]
+
+  ];
+
+
+  const text =
+  messages[
+    Math.floor(
+      Math.random()
+      *
+      messages.length
+    )
+  ];
+
+
+  setMessage(
+    text[0],
+    text[1]
+  );
+
+
+  const event =
+  Math.floor(
+    Math.random()
+    * 8
+  );
+
+
+  switch(event) {
+
+
+    case 0:
+
+      moveButton();
+
+      break;
+
+
+    case 1:
+
+      redButton.style
+      .setProperty(
+
+        "--size",
+
+        (
+          70
+          +
+          Math.floor(
+            Math.random()
+            * 90
+          )
+        )
+        +
+        "px"
+
+      );
+
+
+      moveButton();
+
+      break;
+
+
+    case 2:
+
+      runAway(
+
+        3
+        +
+        Math.floor(
+          Math.random()
+          * 5
+        ),
+
+        400
+
+      );
+
+      break;
+
+
+    case 3:
+
+      redButton
+      .classList.add(
+        "rotate"
+      );
+
+      break;
+
+
+    case 4:
+
+      makeFakeButtons(
+
+        4
+        +
+        Math.floor(
+          Math.random()
+          * 5
+        )
+
+      );
+
+      break;
+
+
+    case 5:
+
+      flashRed();
+
+      shake();
+
+      break;
+
+
+    case 6:
+
+      redButton
+      .classList.add(
+        "pulse"
+      );
+
+      moveButton();
+
+      break;
+
+
+    case 7:
+
+      showWarning(
+
+        "STILL GOING?",
+
+        "The button is concerned about you."
+
+      );
+
+      break;
+
+  }
+
+}
+
+
+function startEndless() {
+
+  ending
+  .classList.add(
+    "hidden"
+  );
+
+
+  playAgainJoke
+  .classList.add(
+    "hidden"
+  );
+
+
+  fakeGameOver
+  .classList.add(
+    "hidden"
+  );
+
+
+  endless =
+  true;
+
+
+  presses =
+  Math.max(
+    presses,
+    30
+  );
+
+
+  locked =
+  false;
+
+
+  resetButton();
+
+
+  setMessage(
+
+    "ENDLESS MODE",
+
+    "There is no ending. This was your choice."
+
+  );
+
+
+  updateUI();
+
+
+  setTimeout(
+
+    endlessEvent,
+
+    700
+
+  );
+
+}
+
+
+/* RESTART */
+
+function actualRestart() {
+
+  playAgainJoke
+  .classList.add(
+    "hidden"
+  );
+
+
+  ending
+  .classList.add(
+    "hidden"
+  );
+
+
+  fakeGameOver
+  .classList.add(
+    "hidden"
+  );
+
+
+  endless =
+  false;
+
+
+  presses =
+  0;
+
+
+  locked =
+  false;
+
+
+  resetButton();
+
+
+  setMessage(
+
+    "Whatever you do… don't press the button.",
+
+    "There is literally one rule."
+
+  );
+
+
+  updateUI();
+
+}
+
+
+function restartWithJoke() {
+
+  ending
+  .classList.add(
+    "hidden"
+  );
+
+
+  playAgainJoke
+  .classList.remove(
+    "hidden"
+  );
+
+
+  jokeTitle.textContent =
+  "No.";
+
+
+  jokeText.textContent =
+  "You had your chance.";
+
+
+  setTimeout(() => {
+
+    jokeTitle.textContent =
+    "Fine.";
+
+
+    jokeText.textContent =
+    "But this is the last time. Probably.";
+
+
+    setTimeout(
+
+      actualRestart,
+
+      900
+
+    );
+
+  },1000);
+
+}
+
+
+/* MAIN PRESS */
+
+function pressTheButton() {
+
+  if (locked)
+  return;
+
+
+  locked =
+  true;
+
+
+  beep(
+
+    140
+    +
+    Math.min(
+      presses * 4,
+      120
+    )
+
+  );
+
+
+  vibrate(18);
+
+
+  presses++;
+
+
+  if (
+    presses >
+    highScore
+  ) {
+
+    highScore =
+    presses;
+
+
+    localStorage.setItem(
+
+      "redButtonHighScore",
+
+      String(
+        highScore
+      )
+
+    );
+
+  }
+
+
+  updateUI();
+
+
+  setTimeout(() => {
+
+    locked =
+    false;
+
+
+    if (
+      endless
+      ||
+      presses > 30
+    ) {
+
+      endlessEvent();
+
+    }
+
+    else {
+
+      stage(
+        presses
+      );
+
+    }
+
+  },100);
+
+}
+
+
+/* BUTTON EVENTS */
+
+redButton
+.addEventListener(
+  "click",
+  pressTheButton
+);
+
+
+soundButton
+.addEventListener(
+  "click",
+  () => {
+
+    soundOn =
+    !soundOn;
+
+
+    localStorage.setItem(
+
+      "redButtonSound",
+
+      soundOn
+      ? "on"
+      : "off"
+
+    );
+
+
+    updateUI();
+
+
+    if (soundOn) {
+
+      beep(
+        350,
+        .08,
+        "sine"
+      );
+
+    }
+
+  }
+);
+
+
+continueButton
+.addEventListener(
+  "click",
+  () => {
+
+    fakeGameOver
+    .classList.add(
+      "hidden"
+    );
+
+
+    redButton
+    .classList.remove(
+      "hiddenButton"
+    );
+
+
+    setMessage(
+
+      "...Why are you still here?",
+
+      "I said GAME OVER."
+
+    );
+
+
+    moveButton();
+
+
+    errorSound();
+
+  }
+);
+
+
+endlessButton
+.addEventListener(
+  "click",
+  startEndless
+);
+
+
+endlessTop
+.addEventListener(
+  "click",
+  startEndless
+);
+
+
+restartButton
+.addEventListener(
+  "click",
+  restartWithJoke
+);
+
+
+/* KEEP MOVING BUTTON INSIDE SCREEN */
+
+window
+.addEventListener(
+  "resize",
+  () => {
+
+    if (
+      redButton
+      .style
+      .left
+      .includes("px")
+    ) {
+
+      moveButton();
+
+    }
+
+  }
+);
+
+
+/* START */
+
+updateUI();
+
+})();
+</script>
+
+</body>
+  </html>
