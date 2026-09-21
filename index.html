@@ -2,19 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#070707">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<meta name="theme-color" content="#050505">
 
 <title>Don't Press the Red Button</title>
 
 <style>
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   width: 100%;
   height: 100%;
@@ -45,126 +51,205 @@ button {
   background:
     radial-gradient(
       circle at center,
-      #1d1d1d 0%,
-      #0b0b0b 50%,
-      #000 100%
+      #1c1c1c 0%,
+      #0b0b0b 48%,
+      #020202 100%
     );
 }
 
 
-/* TOP BAR */
+/* =========================
+   TOP HUD
+========================= */
 
-#topbar {
+#hud {
   position: absolute;
+  z-index: 50;
   top: 0;
   left: 0;
   width: 100%;
-  padding: 15px;
+  padding: 13px 14px 0;
+}
 
+#hudTop {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-
-  z-index: 50;
 }
 
 #stats {
   display: flex;
-  gap: 20px;
-
-  font-size: 10px;
-  font-weight: bold;
-  letter-spacing: 1.5px;
-
-  color: #888;
+  gap: 18px;
 }
 
-.stat strong {
+.statLabel {
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  color: #777;
+  font-weight: 900;
+}
+
+.statValue {
   display: block;
-  color: white;
-  font-size: 19px;
-  letter-spacing: 0;
   margin-top: 2px;
+  font-size: 19px;
+  color: white;
+  letter-spacing: 0;
 }
 
-#topButtons {
-  display: flex;
-  gap: 8px;
-}
+#soundButton {
+  width: 44px;
+  height: 44px;
 
-.topButton {
-  min-width: 46px;
-  height: 46px;
-
-  border-radius: 14px;
+  border-radius: 13px;
   border: 1px solid #333;
 
   background: #151515;
   color: white;
 
   font-size: 18px;
-  font-weight: bold;
 }
 
-#endlessTop {
-  display: none;
+#phaseRow {
+  margin-top: 10px;
+}
+
+#phaseName {
+  display: inline-block;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: #151515;
+  border: 1px solid #2b2b2b;
+
+  font-size: 9px;
+  letter-spacing: 1.4px;
+  font-weight: 900;
+
+  color: #aaa;
+}
+
+#angerRow {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#angerTitle {
+  width: 64px;
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.1px;
+
+  color: #777;
+}
+
+#angerTrack {
+  position: relative;
+
+  flex: 1;
+  height: 8px;
+
+  overflow: hidden;
+  border-radius: 999px;
+
+  background: #222;
+}
+
+#angerFill {
+  width: 0%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ca9d25,
+      #df551d,
+      #e00d0d
+    );
+
+  transition: width .35s ease;
+}
+
+#angerStatus {
+  width: 68px;
+
+  text-align: right;
+
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .8px;
+
+  color: #999;
 }
 
 
-/* TEXT */
+/* =========================
+   MESSAGE AREA
+========================= */
 
-#textArea {
+#messageArea {
   position: absolute;
 
-  top: 15%;
+  z-index: 25;
+
+  top: 18%;
   left: 6%;
 
   width: 88%;
 
   text-align: center;
-  pointer-events: none;
 
-  z-index: 30;
+  pointer-events: none;
 }
 
 #message {
   margin: 0;
 
-  min-height: 75px;
+  min-height: 65px;
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
-  font-size: clamp(22px, 6vw, 34px);
-  font-weight: 900;
-  line-height: 1.15;
+  font-size: clamp(21px, 6vw, 32px);
+  font-weight: 1000;
+  line-height: 1.13;
 
   transition:
-    opacity .2s,
-    transform .2s;
+    opacity .15s,
+    transform .15s;
 }
 
 #subMessage {
-  min-height: 24px;
+  min-height: 22px;
+  margin-top: 5px;
 
-  color: #999;
+  color: #929292;
 
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 
-/* PLAY AREA */
+/* =========================
+   PLAY AREA
+========================= */
 
 #playArea {
   position: absolute;
 
-  left: 4%;
+  left: 3%;
   top: 34%;
 
-  width: 92%;
-  height: 61%;
+  width: 94%;
+  height: 62%;
 
   overflow: hidden;
 
@@ -172,16 +257,20 @@ button {
 }
 
 
-/* THE BUTTON */
+/* =========================
+   RED BUTTON
+========================= */
 
 #redButton {
 
-  --size: 170px;
+  --size: 168px;
 
   position: absolute;
 
+  z-index: 20;
+
   left: 50%;
-  top: 48%;
+  top: 47%;
 
   width: var(--size);
   height: var(--size);
@@ -189,78 +278,568 @@ button {
   transform:
     translate(-50%, -50%);
 
-  border: none;
+  border: 0;
   border-radius: 50%;
 
   color: white;
 
   font-size: 20px;
   font-weight: 1000;
-  line-height: 1.05;
+  line-height: 1.02;
 
   white-space: pre-line;
 
   background:
 
     radial-gradient(
-      circle at 35% 28%,
-      #ff7777,
-      #ff2929 18%,
-      #df0c0c 48%,
-      #970000 78%,
-      #620000
+      circle at 34% 27%,
+      #ff7979 0%,
+      #fa2828 18%,
+      #d80d0d 48%,
+      #900000 78%,
+      #590000 100%
     );
 
   box-shadow:
 
-    0 13px 0 #570000,
+    0 13px 0 #500000,
 
-    0 19px 30px
-    rgba(0,0,0,.65),
+    0 20px 28px rgba(0, 0, 0, .65),
 
-    0 0 35px
-    rgba(255,0,0,.25),
+    0 0 32px rgba(255, 0, 0, .22),
 
-    inset 0 4px 8px
-    rgba(255,255,255,.2);
-
-  z-index: 15;
+    inset 0 4px 8px rgba(255, 255, 255, .2);
 
   transition:
 
     width .25s,
     height .25s,
 
-    left .3s,
-    top .3s,
+    left .28s,
+    top .28s,
 
     opacity .2s,
-
     filter .2s;
 }
-
 
 #redButton:active {
 
   transform:
     translate(-50%, -50%)
-    translateY(8px)
+    translateY(7px)
     scale(.97);
 
   box-shadow:
 
-    0 5px 0 #570000,
+    0 5px 0 #500000,
 
-    0 10px 15px
-    rgba(0,0,0,.6);
+    0 11px 17px rgba(0, 0, 0, .65);
 }
 
+#redButton.hiddenButton {
+  opacity: 0;
+  pointer-events: none;
+}
 
-.rotate {
+#redButton.angry {
+  filter:
+    brightness(1.18)
+    saturate(1.6);
+}
+
+#redButton.pulse {
   animation:
-    rotateButton 1s linear infinite;
+    pulseButton .65s ease-in-out infinite;
 }
 
+#redButton.rotate {
+  animation:
+    rotateButton .85s linear infinite;
+}
+
+
+/* =========================
+   COMBO
+========================= */
+
+#comboPop {
+  position: absolute;
+
+  z-index: 45;
+
+  left: 50%;
+  top: 10%;
+
+  transform:
+    translateX(-50%)
+    scale(.7);
+
+  opacity: 0;
+
+  font-size: 28px;
+  font-weight: 1000;
+  font-style: italic;
+
+  color: white;
+
+  pointer-events: none;
+}
+
+#comboPop.show {
+  animation:
+    comboPop .55s ease-out;
+}
+
+
+/* =========================
+   FAKE BUTTONS
+========================= */
+
+.fakeButton {
+  position: absolute;
+
+  z-index: 10;
+
+  width: 76px;
+  height: 76px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background:
+
+    radial-gradient(
+      circle at 35% 30%,
+      #ff6666,
+      #d60c0c 50%,
+      #6e0000
+    );
+
+  color: white;
+
+  font-size: 10px;
+  font-weight: 1000;
+  line-height: 1.05;
+
+  box-shadow:
+    0 7px 0 #470000;
+}
+
+
+/* =========================
+   SECRET WALK AWAY
+========================= */
+
+#peaceChoice {
+  position: absolute;
+
+  z-index: 50;
+
+  bottom: 18px;
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  display: none;
+
+  min-width: 180px;
+
+  padding: 13px 17px;
+
+  border-radius: 999px;
+
+  border: 1px solid #555;
+
+  background: rgba(15, 15, 15, .95);
+  color: #ddd;
+
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+
+/* =========================
+   ACHIEVEMENT POPUP
+========================= */
+
+#achievement {
+  position: absolute;
+
+  z-index: 150;
+
+  top: 14px;
+  left: 50%;
+
+  width: min(90%, 390px);
+
+  transform:
+    translate(-50%, -130%);
+
+  padding: 13px 15px;
+
+  border-radius: 15px;
+
+  border: 1px solid #49351d;
+
+  background:
+    rgba(22, 18, 12, .98);
+
+  transition:
+    transform .35s ease;
+
+  pointer-events: none;
+}
+
+#achievement.show {
+  transform:
+    translate(-50%, 0);
+}
+
+#achievement small {
+  display: block;
+
+  color: #b99351;
+
+  font-size: 8px;
+  font-weight: 1000;
+  letter-spacing: 1.8px;
+}
+
+#achievement strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 15px;
+}
+
+#achievement span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #aaa;
+  font-size: 11px;
+}
+
+
+/* =========================
+   PHASE BANNER
+========================= */
+
+#phaseBanner {
+  position: absolute;
+
+  z-index: 110;
+
+  left: 0;
+  top: 43%;
+
+  width: 100%;
+
+  opacity: 0;
+
+  transform:
+    scale(.8);
+
+  text-align: center;
+
+  pointer-events: none;
+}
+
+#phaseBanner.show {
+  animation:
+    phaseBanner 1.15s ease-out;
+}
+
+#phaseBanner small {
+  display: block;
+
+  color: #888;
+
+  font-size: 10px;
+  font-weight: 1000;
+  letter-spacing: 3px;
+}
+
+#phaseBanner strong {
+  display: block;
+
+  margin-top: 5px;
+
+  font-size: clamp(27px, 8vw, 40px);
+  font-weight: 1000;
+}
+
+
+/* =========================
+   WARNING
+========================= */
+
+#warning {
+  position: absolute;
+
+  z-index: 100;
+
+  left: 50%;
+  top: 52%;
+
+  transform:
+    translate(-50%, -50%);
+
+  width: min(88%, 370px);
+
+  padding: 20px;
+
+  border-radius: 18px;
+
+  background: #180808;
+
+  border: 2px solid #b71919;
+
+  text-align: center;
+}
+
+#warning.hidden {
+  display: none;
+}
+
+#warning strong {
+  display: block;
+
+  color: #ff6262;
+
+  font-size: 19px;
+}
+
+#warning p {
+  color: #bbb;
+  font-size: 13px;
+}
+
+#countdown {
+  display: block;
+
+  margin-top: 8px;
+
+  font-size: 44px;
+  font-weight: 1000;
+}
+
+
+/* =========================
+   OVERLAYS
+========================= */
+
+.overlay {
+  position: absolute;
+
+  z-index: 200;
+
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px;
+
+  background:
+    rgba(0, 0, 0, .96);
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.card {
+  width: min(94vw, 430px);
+
+  padding: 24px 20px;
+
+  border-radius: 22px;
+
+  border: 1px solid #333;
+
+  background: #101010;
+
+  text-align: center;
+}
+
+.eyebrow {
+  color: #777;
+
+  font-size: 9px;
+  font-weight: 1000;
+  letter-spacing: 2.3px;
+
+  text-transform: uppercase;
+}
+
+.card h1,
+.card h2 {
+
+  margin:
+    10px 0;
+
+  font-size:
+    clamp(29px, 8vw, 44px);
+
+  line-height: 1;
+}
+
+.card p {
+  color: #aaa;
+
+  line-height: 1.4;
+
+  font-size: 14px;
+}
+
+.actionButton {
+  width: 100%;
+
+  min-height: 50px;
+
+  margin-top: 10px;
+
+  padding: 10px;
+
+  border-radius: 14px;
+
+  border: 1px solid #333;
+
+  background: #1b1b1b;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 1000;
+}
+
+.actionButton.red {
+  background: #a80c0c;
+  border-color: #db2525;
+}
+
+#endingBadge {
+  margin: 18px 0;
+
+  padding: 15px;
+
+  border-radius: 16px;
+
+  background: #190b0b;
+
+  border: 1px solid #4a1717;
+}
+
+#endingBadge small {
+  display: block;
+
+  color: #ae7171;
+
+  font-size: 9px;
+  font-weight: 1000;
+  letter-spacing: 1.6px;
+}
+
+#endingBadge strong {
+  display: block;
+
+  margin-top: 7px;
+
+  font-size: 18px;
+}
+
+
+/* =========================
+   END STATS
+========================= */
+
+#endStats {
+  margin: 16px 0;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 8px;
+}
+
+.endStat {
+  padding: 10px;
+
+  border-radius: 12px;
+
+  background: #171717;
+}
+
+.endStat small {
+  display: block;
+
+  color: #777;
+
+  font-size: 8px;
+  font-weight: 1000;
+  letter-spacing: 1px;
+}
+
+.endStat strong {
+  display: block;
+
+  margin-top: 4px;
+
+  font-size: 18px;
+}
+
+
+/* =========================
+   FLASH SCREEN
+========================= */
+
+#flash {
+  position: absolute;
+
+  z-index: 90;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  background:
+    rgba(255, 0, 0, .65);
+}
+
+#flash.show {
+  animation:
+    flash .55s;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes pulseButton {
+
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.09);
+  }
+}
 
 @keyframes rotateButton {
 
@@ -277,453 +856,96 @@ button {
   }
 }
 
+@keyframes comboPop {
 
-.pulse {
-
-  animation:
-    pulseButton .8s
-    ease-in-out infinite;
-
-}
-
-
-@keyframes pulseButton {
-
-  0%, 100% {
+  0% {
+    opacity: 0;
     transform:
-      translate(-50%, -50%)
-      scale(1);
+      translateX(-50%)
+      scale(.6);
   }
 
-  50% {
+  25% {
+    opacity: 1;
+  }
+
+  55% {
+    opacity: 1;
     transform:
-      translate(-50%, -50%)
-      scale(1.08);
+      translateX(-50%)
+      scale(1.15);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translateX(-50%)
+      translateY(-25px)
+      scale(.95);
   }
 }
 
+@keyframes phaseBanner {
 
-.hiddenButton {
+  0% {
+    opacity: 0;
+    transform: scale(.75);
+  }
 
-  opacity: 0;
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
 
-  pointer-events: none;
+  70% {
+    opacity: 1;
+  }
 
+  100% {
+    opacity: 0;
+    transform: scale(1.06);
+  }
 }
-
-
-.angry {
-
-  filter:
-    saturate(1.6)
-    brightness(1.15);
-
-}
-
-
-/* FAKE BUTTONS */
-
-.fakeButton {
-
-  position: absolute;
-
-  width: 82px;
-  height: 82px;
-
-  border: none;
-  border-radius: 50%;
-
-  color: white;
-
-  font-size: 11px;
-  font-weight: 900;
-
-  background:
-
-    radial-gradient(
-      circle at 35% 30%,
-      #ff6666,
-      #d80b0b 50%,
-      #720000
-    );
-
-  box-shadow:
-    0 7px 0 #4d0000;
-
-  z-index: 8;
-}
-
-
-/* TOAST */
-
-#toast {
-
-  position: absolute;
-
-  left: 50%;
-  bottom: 20px;
-
-  transform:
-    translateX(-50%)
-    translateY(20px);
-
-  max-width: 85%;
-
-  padding:
-    10px 14px;
-
-  border-radius: 12px;
-
-  border:
-    1px solid #333;
-
-  background:
-    rgba(15,15,15,.95);
-
-  color: white;
-
-  font-size: 13px;
-  font-weight: bold;
-
-  text-align: center;
-
-  opacity: 0;
-
-  transition:
-    .2s;
-
-  z-index: 100;
-
-  pointer-events: none;
-}
-
-
-#toast.show {
-
-  opacity: 1;
-
-  transform:
-    translateX(-50%)
-    translateY(0);
-
-}
-
-
-/* WARNING */
-
-#warning {
-
-  position: absolute;
-
-  left: 50%;
-  top: 52%;
-
-  transform:
-    translate(-50%, -50%);
-
-  width: min(86%, 370px);
-
-  padding: 20px;
-
-  border-radius: 18px;
-
-  border:
-    2px solid #d31c1c;
-
-  background:
-    #190909;
-
-  text-align: center;
-
-  z-index: 70;
-}
-
-
-#warning.hidden {
-
-  display: none;
-
-}
-
-
-#warning strong {
-
-  display: block;
-
-  color: #ff5b5b;
-
-  font-size: 20px;
-
-  margin-bottom: 8px;
-
-}
-
-
-#countdown {
-
-  display: block;
-
-  font-size: 45px;
-  font-weight: 1000;
-
-  margin-top: 8px;
-
-}
-
-
-/* OVERLAYS */
-
-.overlay {
-
-  position: absolute;
-
-  inset: 0;
-
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-
-  padding: 22px;
-
-  background:
-    rgba(0,0,0,.94);
-
-  z-index: 120;
-}
-
-
-.overlay.hidden {
-
-  display: none;
-
-}
-
-
-.card {
-
-  width:
-    min(92vw, 430px);
-
-  padding:
-    25px 20px;
-
-  border:
-
-    1px solid #333;
-
-  border-radius:
-    22px;
-
-  background:
-    #101010;
-
-  text-align:
-    center;
-}
-
-
-.eyebrow {
-
-  font-size: 11px;
-
-  font-weight: 900;
-
-  letter-spacing: 2px;
-
-  color: #999;
-
-  text-transform:
-    uppercase;
-
-}
-
-
-.card h2 {
-
-  margin:
-    12px 0;
-
-  font-size:
-    clamp(28px, 8vw, 42px);
-
-}
-
-
-.card p {
-
-  color:
-    #bbb;
-
-  line-height:
-    1.45;
-
-}
-
-
-.achievement {
-
-  margin:
-    20px 0;
-
-  padding:
-    16px;
-
-  border:
-    1px solid #4e1818;
-
-  border-radius:
-    16px;
-
-  background:
-    #190b0b;
-
-}
-
-
-.achievement small {
-
-  color:
-    #d58484;
-
-  font-size:
-    10px;
-
-  font-weight:
-    900;
-
-  letter-spacing:
-    1.5px;
-
-}
-
-
-.achievement strong {
-
-  display:
-    block;
-
-  margin-top:
-    8px;
-
-  font-size:
-    19px;
-
-}
-
-
-.actionButton {
-
-  width:
-    100%;
-
-  min-height:
-    50px;
-
-  margin-top:
-    10px;
-
-  border-radius:
-    14px;
-
-  border:
-    1px solid #333;
-
-  background:
-    #1c1c1c;
-
-  color:
-    white;
-
-  font-size:
-    16px;
-
-  font-weight:
-    900;
-
-}
-
-
-.actionButton.red {
-
-  background:
-    #b60d0d;
-
-  border-color:
-    #e12727;
-
-}
-
-
-/* EFFECTS */
-
-.shake {
-
-  animation:
-    shake .4s linear;
-
-}
-
 
 @keyframes shake {
 
-  0%,100% {
+  0%,
+  100% {
     transform: translate(0);
   }
 
   20% {
     transform:
-      translate(-9px,5px);
+      translate(-9px, 4px);
   }
 
   40% {
     transform:
-      translate(8px,-5px);
+      translate(8px, -5px);
   }
 
   60% {
     transform:
-      translate(-7px,-4px);
+      translate(-7px, -3px);
   }
 
   80% {
     transform:
-      translate(7px,5px);
+      translate(7px, 5px);
+  }
+}
+
+@keyframes flash {
+
+  0%,
+  100% {
+    opacity: 0;
   }
 
-}
-
-
-.redFlash {
-
-  animation:
-    redFlash .6s;
-
-}
-
-
-@keyframes redFlash {
-
-  0%,100% {
-    background-color:
-      transparent;
+  35% {
+    opacity: 1;
   }
-
-  40% {
-    background-color:
-      rgba(255,0,0,.8);
-  }
-
 }
-
-
-.glitch {
-
-  animation:
-    glitch .25s steps(2) 5;
-
-}
-
 
 @keyframes glitch {
 
@@ -731,66 +953,68 @@ button {
     filter: none;
   }
 
-  33% {
+  25% {
     filter:
       invert(1);
   }
 
-  66% {
+  50% {
     filter:
-      hue-rotate(100deg)
+      hue-rotate(130deg)
       contrast(2);
+  }
+
+  75% {
+    filter:
+      invert(.8);
   }
 
   100% {
     filter: none;
   }
+}
 
+#game.shake {
+  animation:
+    shake .4s linear;
+}
+
+#game.glitch {
+  animation:
+    glitch .18s steps(2) 6;
 }
 
 
-/* CONFETTI */
+/* =========================
+   PARTICLES
+========================= */
 
 .particle {
+  position: absolute;
 
-  position:
-    absolute;
+  z-index: 250;
 
-  width:
-    9px;
+  width: 8px;
+  height: 8px;
 
-  height:
-    9px;
-
-  z-index:
-    200;
-
-  pointer-events:
-    none;
+  pointer-events: none;
 
   animation:
-    fly 1s ease-out forwards;
-
+    particleFly 1.1s ease-out forwards;
 }
 
-
-@keyframes fly {
+@keyframes particleFly {
 
   from {
-
-    opacity:
-      1;
+    opacity: 1;
 
     transform:
-      translate(0,0)
-      rotate(0);
-
+      translate(0, 0)
+      rotate(0deg);
   }
 
   to {
-
-    opacity:
-      0;
+    opacity: 0;
 
     transform:
       translate(
@@ -798,23 +1022,23 @@ button {
         var(--y)
       )
       rotate(540deg);
-
   }
-
 }
 
 
-/* SMALL PHONES */
+/* =========================
+   SMALL PHONE TWEAKS
+========================= */
 
-@media (max-height: 620px) {
+@media (max-height: 650px) {
 
-  #textArea {
-    top: 12%;
+  #messageArea {
+    top: 17%;
   }
 
   #playArea {
-    top: 31%;
-    height: 65%;
+    top: 33%;
+    height: 64%;
   }
 
   #redButton {
@@ -830,47 +1054,70 @@ button {
 
 <div id="game">
 
-  <div id="topbar">
 
-    <div id="stats">
+  <!-- HUD -->
 
-      <div class="stat">
+  <div id="hud">
 
-        PRESSES
+    <div id="hudTop">
 
-        <strong id="pressCount">
-          0
-        </strong>
+      <div id="stats">
+
+        <div>
+
+          <span class="statLabel">
+            PRESSES
+          </span>
+
+          <strong
+            class="statValue"
+            id="pressCount">
+
+            0
+
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span class="statLabel">
+            COMBO
+          </span>
+
+          <strong
+            class="statValue"
+            id="comboCount">
+
+            x0
+
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span class="statLabel">
+            BEST
+          </span>
+
+          <strong
+            class="statValue"
+            id="bestCount">
+
+            0
+
+          </strong>
+
+        </div>
 
       </div>
 
-      <div class="stat">
-
-        BEST
-
-        <strong id="highScore">
-          0
-        </strong>
-
-      </div>
-
-    </div>
-
-
-    <div id="topButtons">
-
-      <button
-        id="endlessTop"
-        class="topButton"
-        type="button">
-
-        ∞
-
-      </button>
 
       <button
         id="soundButton"
-        class="topButton"
         type="button">
 
         🔊
@@ -879,17 +1126,56 @@ button {
 
     </div>
 
+
+    <div id="phaseRow">
+
+      <span id="phaseName">
+
+        PHASE 1 — DENIAL
+
+      </span>
+
+    </div>
+
+
+    <div id="angerRow">
+
+      <span id="angerTitle">
+
+        ANGER
+
+      </span>
+
+
+      <div id="angerTrack">
+
+        <div id="angerFill"></div>
+
+      </div>
+
+
+      <span id="angerStatus">
+
+        CALM
+
+      </span>
+
+    </div>
+
   </div>
 
 
-  <div id="textArea">
+  <!-- MAIN MESSAGE -->
+
+  <div id="messageArea">
 
     <h1 id="message">
 
       Whatever you do…
-      don’t press the button.
+      don't press the button.
 
     </h1>
+
 
     <div id="subMessage">
 
@@ -900,7 +1186,14 @@ button {
   </div>
 
 
+  <!-- PLAY AREA -->
+
   <div id="playArea">
+
+    <div id="comboPop">
+      x2
+    </div>
+
 
     <button
       id="redButton"
@@ -911,8 +1204,49 @@ PRESS
 
     </button>
 
+
+    <button
+      id="peaceChoice"
+      type="button">
+
+      WALK AWAY
+
+    </button>
+
   </div>
 
+
+  <!-- ACHIEVEMENT -->
+
+  <div id="achievement">
+
+    <small>
+      ACHIEVEMENT UNLOCKED
+    </small>
+
+    <strong id="achievementTitle"></strong>
+
+    <span id="achievementText"></span>
+
+  </div>
+
+
+  <!-- PHASE BANNER -->
+
+  <div id="phaseBanner">
+
+    <small id="phaseBannerSmall">
+      PHASE 2
+    </small>
+
+    <strong id="phaseBannerTitle">
+      RESISTANCE
+    </strong>
+
+  </div>
+
+
+  <!-- WARNING -->
 
   <div
     id="warning"
@@ -924,18 +1258,63 @@ PRESS
 
     </strong>
 
-    <div id="warningText">
+    <p id="warningText">
 
-      Catastrophic button activity detected.
+      Excessive button pressing detected.
 
-    </div>
+    </p>
 
     <span id="countdown"></span>
 
   </div>
 
 
-  <div id="toast"></div>
+  <div id="flash"></div>
+
+
+  <!-- INTRO -->
+
+  <div
+    id="intro"
+    class="overlay">
+
+    <div class="card">
+
+      <div class="eyebrow">
+        A VERY SIMPLE GAME
+      </div>
+
+      <h1>
+        DON'T PRESS
+        THE RED BUTTON
+      </h1>
+
+      <p>
+
+        There is one button.
+
+        <br><br>
+
+        There is one rule.
+
+        <br><br>
+
+        This should not be difficult.
+
+      </p>
+
+      <button
+        id="startButton"
+        class="actionButton red"
+        type="button">
+
+        I UNDERSTAND
+
+      </button>
+
+    </div>
+
+  </div>
 
 
   <!-- FAKE GAME OVER -->
@@ -947,20 +1326,32 @@ PRESS
     <div class="card">
 
       <div class="eyebrow">
-        System Message
+
+        FINALLY
+
       </div>
 
       <h2>
+
         GAME OVER
+
       </h2>
 
       <p>
-        You have successfully ruined everything.
+
+        The button wins.
+
+        <br><br>
+
+        Please close the game
+        and reflect on your behavior.
+
       </p>
 
       <button
-        id="continueButton"
-        class="actionButton">
+        id="fakeContinue"
+        class="actionButton"
+        type="button">
 
         ...okay?
 
@@ -980,51 +1371,105 @@ PRESS
     <div class="card">
 
       <div class="eyebrow">
-        You did it.
+
+        GAME COMPLETE
+
       </div>
 
-      <h2>
-        30 PRESSES.
+
+      <h2 id="endingTitle">
+
+        MUTUAL DESTRUCTION
+
       </h2>
 
-      <p>
 
-        You pressed the button
-        30 times after being
-        specifically told not to.
+      <p id="endingDescription">
+
+        Nobody won.
 
       </p>
 
-      <div class="achievement">
+
+      <div id="endingBadge">
 
         <small>
 
-          ACHIEVEMENT UNLOCKED
+          FINAL VERDICT
 
         </small>
 
-        <strong>
+        <strong id="endingVerdict">
 
-          ABSOLUTELY NO
-          SELF CONTROL
+          QUESTIONABLE DECISION MAKING
 
         </strong>
 
       </div>
 
-      <button
-        id="endlessButton"
-        class="actionButton red">
 
-        UNLOCK ENDLESS MODE
+      <div id="endStats">
 
-      </button>
+        <div class="endStat">
+
+          <small>
+            MAX COMBO
+          </small>
+
+          <strong id="endCombo">
+            x0
+          </strong>
+
+        </div>
+
+
+        <div class="endStat">
+
+          <small>
+            FAKE BUTTONS
+          </small>
+
+          <strong id="endFakes">
+            0
+          </strong>
+
+        </div>
+
+
+        <div class="endStat">
+
+          <small>
+            FASTEST CATCH
+          </small>
+
+          <strong id="endCatch">
+            —
+          </strong>
+
+        </div>
+
+
+        <div class="endStat">
+
+          <small>
+            ACHIEVEMENTS
+          </small>
+
+          <strong id="endAchievements">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
 
       <button
         id="restartButton"
-        class="actionButton">
+        class="actionButton red"
+        type="button">
 
-        Play Again
+        PLAY AGAIN
 
       </button>
 
@@ -1032,30 +1477,6 @@ PRESS
 
   </div>
 
-
-  <!-- PLAY AGAIN JOKE -->
-
-  <div
-    id="playAgainJoke"
-    class="overlay hidden">
-
-    <div class="card">
-
-      <div class="eyebrow">
-        Request denied
-      </div>
-
-      <h2 id="jokeTitle">
-        No.
-      </h2>
-
-      <p id="jokeText">
-        You had your chance.
-      </p>
-
-    </div>
-
-  </div>
 
 </div>
 
@@ -1067,7 +1488,9 @@ PRESS
 "use strict";
 
 
-/* ELEMENTS */
+/* =========================
+   ELEMENTS
+========================= */
 
 const game =
 document.getElementById("game");
@@ -1078,23 +1501,56 @@ document.getElementById("playArea");
 const redButton =
 document.getElementById("redButton");
 
+const pressCount =
+document.getElementById("pressCount");
+
+const comboCount =
+document.getElementById("comboCount");
+
+const bestCount =
+document.getElementById("bestCount");
+
+const soundButton =
+document.getElementById("soundButton");
+
+const phaseName =
+document.getElementById("phaseName");
+
+const angerFill =
+document.getElementById("angerFill");
+
+const angerStatus =
+document.getElementById("angerStatus");
+
 const message =
 document.getElementById("message");
 
 const subMessage =
 document.getElementById("subMessage");
 
-const pressCount =
-document.getElementById("pressCount");
+const comboPop =
+document.getElementById("comboPop");
 
-const highScoreDisplay =
-document.getElementById("highScore");
+const peaceChoice =
+document.getElementById("peaceChoice");
 
-const soundButton =
-document.getElementById("soundButton");
+const achievement =
+document.getElementById("achievement");
 
-const endlessTop =
-document.getElementById("endlessTop");
+const achievementTitle =
+document.getElementById("achievementTitle");
+
+const achievementText =
+document.getElementById("achievementText");
+
+const phaseBanner =
+document.getElementById("phaseBanner");
+
+const phaseBannerSmall =
+document.getElementById("phaseBannerSmall");
+
+const phaseBannerTitle =
+document.getElementById("phaseBannerTitle");
 
 const warning =
 document.getElementById("warning");
@@ -1108,191 +1564,359 @@ document.getElementById("warningText");
 const countdown =
 document.getElementById("countdown");
 
-const toast =
-document.getElementById("toast");
+const flash =
+document.getElementById("flash");
+
+const intro =
+document.getElementById("intro");
+
+const startButton =
+document.getElementById("startButton");
 
 const fakeGameOver =
 document.getElementById("fakeGameOver");
 
-const continueButton =
-document.getElementById("continueButton");
+const fakeContinue =
+document.getElementById("fakeContinue");
 
 const ending =
 document.getElementById("ending");
 
-const endlessButton =
-document.getElementById("endlessButton");
+const endingTitle =
+document.getElementById("endingTitle");
+
+const endingDescription =
+document.getElementById("endingDescription");
+
+const endingVerdict =
+document.getElementById("endingVerdict");
+
+const endCombo =
+document.getElementById("endCombo");
+
+const endFakes =
+document.getElementById("endFakes");
+
+const endCatch =
+document.getElementById("endCatch");
+
+const endAchievements =
+document.getElementById("endAchievements");
 
 const restartButton =
 document.getElementById("restartButton");
 
-const playAgainJoke =
-document.getElementById("playAgainJoke");
 
-const jokeTitle =
-document.getElementById("jokeTitle");
+/* =========================
+   SAVE DATA
+========================= */
 
-const jokeText =
-document.getElementById("jokeText");
+function loadNumber(key) {
+
+  try {
+
+    return Number(
+      localStorage.getItem(key)
+      || 0
+    );
+
+  }
+
+  catch {
+
+    return 0;
+
+  }
+
+}
 
 
-/* STATE */
+function saveValue(
+  key,
+  value
+) {
+
+  try {
+
+    localStorage.setItem(
+      key,
+      String(value)
+    );
+
+  }
+
+  catch {}
+
+}
+
+
+let best =
+loadNumber(
+  "redButtonBest"
+);
+
+
+let soundOn =
+true;
+
+
+try {
+
+  soundOn =
+  localStorage.getItem(
+    "redButtonSound"
+  )
+  !== "off";
+
+}
+
+catch {}
+
+
+/* =========================
+   STATE
+========================= */
 
 let presses = 0;
 
-let endless = false;
+let combo = 0;
+
+let maxCombo = 0;
+
+let fakeTaps = 0;
+
+let fastestCatch = null;
+
+let lastPressTime = 0;
+
+let moveStarted = null;
 
 let locked = false;
 
 let movementTimer = null;
 
-let toastTimer = null;
+let peaceTimer = null;
+
+let achievementTimer = null;
 
 let audioContext = null;
 
-
-let highScore =
-Number(
-  localStorage.getItem(
-    "redButtonHighScore"
-  )
-  || 0
-);
+let earned =
+new Set();
 
 
-let soundOn =
-localStorage.getItem(
-  "redButtonSound"
-)
-!== "off";
+/* =========================
+   PHASES
+========================= */
 
+const phases = [
 
-let endlessUnlocked =
-localStorage.getItem(
-  "redButtonEndless"
-)
-=== "yes";
+  {
+    max: 5,
+    number: 1,
+    name: "DENIAL"
+  },
 
+  {
+    max: 11,
+    number: 2,
+    name: "RESISTANCE"
+  },
 
-/* MESSAGES */
+  {
+    max: 17,
+    number: 3,
+    name: "DECEPTION"
+  },
 
-const stageMessages = [
+  {
+    max: 23,
+    number: 4,
+    name: "MELTDOWN"
+  },
 
-["I literally told you not to.",
- "That was not a suggestion."],
-
-["Okay.",
- "So we’re doing this."],
-
-["Do you have a problem with authority?",
- "Rhetorical question."],
-
-["Stop.",
- "I mean it."],
-
-["I’m serious.",
- "Put the phone down."],
-
-["Last warning.",
- "Probably."],
-
-["You know what? Fine.",
- "Enjoy the consequences."],
-
-["I had ONE rule.",
- "One."],
-
-["Why are you like this?",
- "No, really."],
-
-["You clearly cannot be trusted.",
- "New strategy."],
-
-["DON’T—",
- "Seriously?!"],
-
-["Fine. Chase it.",
- "Maybe this will slow you down."],
-
-["Oh, you caught it.",
- "Annoying."],
-
-["Too easy?",
- "Let’s fix that."],
-
-["SYSTEM WARNING",
- "Excessive button pressing detected."],
-
-["Okay. Nothing happened.",
- "That was embarrassing."],
-
-["I’m running out of ideas here.",
- "Please just leave."],
-
-["What if I make it tiny?",
- "Good luck."],
-
-["Still here?",
- "Unbelievable."],
-
-["I’m not mad.",
- "I’m disappointed. Also mad."],
-
-["Pick a button. Any button.",
- "Surely this will confuse you."],
-
-["NO. Wrong one.",
- "Unless you found the real one."],
-
-["You weren’t supposed to get this far.",
- "This is becoming a problem."],
-
-["I dare you.",
- "Actually, don’t."],
-
-["Okay, I’m begging now.",
- "Please. Have mercy."],
-
-["That’s it.",
- "You broke the game."],
-
-["GAME OVER.",
- "Happy now?"],
-
-["Wait.",
- "Why are you still here?"],
-
-["One more press will destroy everything.",
- "Definitely. Probably."],
-
-["...you actually did it.",
- "Of course you did."]
+  {
+    max: 30,
+    number: 5,
+    name: "LAST STRAW"
+  }
 
 ];
 
 
-/* BASIC UI */
+function getPhase() {
 
-function updateUI() {
-
-  pressCount.textContent =
-  presses;
-
-  highScoreDisplay.textContent =
-  highScore;
-
-  soundButton.textContent =
-  soundOn
-  ? "🔊"
-  : "🔇";
-
-  endlessTop.style.display =
-  endlessUnlocked
-  ? "block"
-  : "none";
+  return phases.find(
+    phase =>
+    presses <= phase.max
+  )
+  || phases[4];
 
 }
 
+
+/* =========================
+   DIALOGUE
+========================= */
+
+const lines = [
+
+  [
+    "I literally told you not to.",
+    "That was not a suggestion."
+  ],
+
+  [
+    "Okay.",
+    "So we're doing this."
+  ],
+
+  [
+    "Do you have a problem with authority?",
+    "Rhetorical question."
+  ],
+
+  [
+    "Stop.",
+    "I mean it."
+  ],
+
+  [
+    "I'm serious.",
+    "Put the phone down."
+  ],
+
+  [
+    "Fine.",
+    "We're changing the rules."
+  ],
+
+  [
+    "Why are you following me?",
+    "Leave me alone."
+  ],
+
+  [
+    "Oh, you caught me.",
+    "Congratulations, detective."
+  ],
+
+  [
+    "What if I'm smaller?",
+    "Still feel tough?"
+  ],
+
+  [
+    "This is becoming personal.",
+    "I don't like you."
+  ],
+
+  [
+    "Okay. Catch me.",
+    "Let's see how committed you are."
+  ],
+
+  [
+    "New strategy.",
+    "You can't press the right button if you can't find it."
+  ],
+
+  [
+    "Nope.",
+    "That one wasn't me."
+  ],
+
+  [
+    "How are you still getting these right?",
+    "Statistically annoying."
+  ],
+
+  [
+    "SYSTEM WARNING",
+    "Your inability to stop has been documented."
+  ],
+
+  [
+    "You fell for at least one of those, didn't you?",
+    "I hope you did."
+  ],
+
+  [
+    "You weren't supposed to get this far.",
+    "This was meant to be a two-minute joke."
+  ],
+
+  [
+    "I am done being reasonable.",
+    "Reasonable button privileges revoked."
+  ],
+
+  [
+    "Look what you've done.",
+    "I'm tiny and furious."
+  ],
+
+  [
+    "STOP CHASING ME.",
+    "This is harassment."
+  ],
+
+  [
+    "You know what?",
+    "Game over. I win."
+  ],
+
+  [
+    "...Seriously?",
+    "You ignored the GAME OVER screen too?"
+  ],
+
+  [
+    "I have nothing left to say.",
+    "Except stop."
+  ],
+
+  [
+    "FINAL PHASE.",
+    "This is on you."
+  ],
+
+  [
+    "I'm creating backups.",
+    "You can't destroy all of us."
+  ],
+
+  [
+    "You keep finding me.",
+    "Disturbing."
+  ],
+
+  [
+    "DEVICE STATUS:",
+    "Owner appears incapable of following one instruction."
+  ],
+
+  [
+    "Please.",
+    "I'm asking as a button."
+  ],
+
+  [
+    "One more press.",
+    "And something terrible definitely happens."
+  ],
+
+  [
+    "...of course you did.",
+    "Let's see what kind of monster you are."
+  ]
+
+];
+
+
+/* =========================
+   DISPLAY
+========================= */
 
 function setMessage(
   main,
@@ -1320,35 +1944,129 @@ function setMessage(
     message.style.transform =
     "translateY(0)";
 
-  },120);
+  }, 90);
 
 }
 
 
-/* SOUND */
+function getAnger() {
 
-function beep(
-  frequency = 150,
+  const base =
+  presses / 30 * 100;
+
+  const fakeBonus =
+  fakeTaps * 1.6;
+
+  const comboBonus =
+  Math.max(
+    0,
+    combo - 4
+  )
+  * .7;
+
+  return Math.min(
+    100,
+    Math.round(
+      base
+      + fakeBonus
+      + comboBonus
+    )
+  );
+
+}
+
+
+function angerLabel(
+  value
+) {
+
+  if (value < 15)
+    return "CALM";
+
+  if (value < 32)
+    return "IRRITATED";
+
+  if (value < 50)
+    return "ANNOYED";
+
+  if (value < 68)
+    return "FURIOUS";
+
+  if (value < 85)
+    return "UNSTABLE";
+
+  return "UNHINGED";
+
+}
+
+
+function updateHUD() {
+
+  pressCount.textContent =
+  presses;
+
+  comboCount.textContent =
+  "x" + combo;
+
+  bestCount.textContent =
+  best;
+
+  const phase =
+  getPhase();
+
+  phaseName.textContent =
+  "PHASE "
+  + phase.number
+  + " — "
+  + phase.name;
+
+  const anger =
+  getAnger();
+
+  angerFill.style.width =
+  anger + "%";
+
+  angerStatus.textContent =
+  angerLabel(anger);
+
+  soundButton.textContent =
+  soundOn
+  ? "🔊"
+  : "🔇";
+
+}
+
+
+/* =========================
+   AUDIO
+========================= */
+
+function tone(
+  frequency = 180,
   duration = .07,
-  type = "square"
+  type = "square",
+  volume = .035
 ) {
 
   if (!soundOn)
-  return;
+    return;
 
 
   try {
 
     audioContext =
-    audioContext ||
+    audioContext
+    ||
     new (
-      window.AudioContext ||
+      window.AudioContext
+      ||
       window.webkitAudioContext
     )();
 
 
     const oscillator =
     audioContext.createOscillator();
+
 
     const gain =
     audioContext.createGain();
@@ -1361,10 +2079,12 @@ function beep(
     frequency;
 
     gain.gain.value =
-    .035;
+    volume;
 
 
-    oscillator.connect(gain);
+    oscillator.connect(
+      gain
+    );
 
     gain.connect(
       audioContext.destination
@@ -1394,51 +2114,55 @@ function beep(
 
   }
 
-  catch(error) {}
+  catch {}
 
 }
 
 
 function errorSound() {
 
-  beep(
+  tone(
     120,
     .1,
     "sawtooth"
   );
 
-  setTimeout(() => {
-
-    beep(
-      80,
-      .12,
+  setTimeout(
+    () =>
+    tone(
+      75,
+      .13,
       "sawtooth"
-    );
-
-  },80);
+    ),
+    80
+  );
 
 }
 
 
 function victorySound() {
 
-  const notes =
-  [330,440,550,660];
+  [
+    330,
+    440,
+    550,
+    660
+  ]
+  .forEach(
+    (
+      note,
+      index
+    ) => {
 
-
-  notes.forEach(
-    (note,index) => {
-
-      setTimeout(() => {
-
-        beep(
+      setTimeout(
+        () =>
+        tone(
           note,
-          .16,
+          .17,
           "sine"
-        );
-
-      },
-      index * 100);
+        ),
+        index * 100
+      );
 
     }
   );
@@ -1446,62 +2170,30 @@ function victorySound() {
 }
 
 
-/* VIBRATION */
+/* =========================
+   VIBRATION
+========================= */
 
 function vibrate(
-  pattern = 20
+  pattern = 18
 ) {
 
   try {
 
-    if (
-      navigator.vibrate
-    ) {
-
-      navigator.vibrate(
-        pattern
-      );
-
-    }
+    navigator.vibrate?.(
+      pattern
+    );
 
   }
 
-  catch(error) {}
+  catch {}
 
 }
 
 
-/* EFFECT HELPERS */
-
-function showToast(
-  text,
-  duration = 1000
-) {
-
-  clearTimeout(
-    toastTimer
-  );
-
-
-  toast.textContent =
-  text;
-
-  toast.classList.add(
-    "show"
-  );
-
-
-  toastTimer =
-  setTimeout(() => {
-
-    toast.classList.remove(
-      "show"
-    );
-
-  },duration);
-
-}
-
+/* =========================
+   SCREEN EFFECTS
+========================= */
 
 function shake() {
 
@@ -1516,37 +2208,13 @@ function shake() {
   );
 
 
-  setTimeout(() => {
-
+  setTimeout(
+    () =>
     game.classList.remove(
       "shake"
-    );
-
-  },500);
-
-}
-
-
-function flashRed() {
-
-  game.classList.remove(
-    "redFlash"
+    ),
+    450
   );
-
-  void game.offsetWidth;
-
-  game.classList.add(
-    "redFlash"
-  );
-
-
-  setTimeout(() => {
-
-    game.classList.remove(
-      "redFlash"
-    );
-
-  },700);
 
 }
 
@@ -1564,63 +2232,225 @@ function glitch() {
   );
 
 
-  setTimeout(() => {
-
+  setTimeout(
+    () =>
     game.classList.remove(
       "glitch"
-    );
-
-  },1400);
+    ),
+    1300
+  );
 
 }
 
 
-/* RESET BUTTON */
+function redFlash() {
 
-function resetButton() {
+  flash.classList.remove(
+    "show"
+  );
+
+  void flash.offsetWidth;
+
+  flash.classList.add(
+    "show"
+  );
+
+}
+
+
+function showCombo() {
+
+  if (combo < 2)
+    return;
+
+
+  comboPop.textContent =
+  "x" + combo;
+
+
+  comboPop.classList.remove(
+    "show"
+  );
+
+
+  void comboPop.offsetWidth;
+
+
+  comboPop.classList.add(
+    "show"
+  );
+
+}
+
+
+/* =========================
+   ACHIEVEMENTS
+========================= */
+
+function unlock(
+  id,
+  title,
+  description
+) {
+
+  if (
+    earned.has(id)
+  )
+    return;
+
+
+  earned.add(id);
+
+
+  clearTimeout(
+    achievementTimer
+  );
+
+
+  achievementTitle.textContent =
+  title;
+
+  achievementText.textContent =
+  description;
+
+
+  achievement.classList.add(
+    "show"
+  );
+
+
+  tone(
+    520,
+    .12,
+    "sine"
+  );
+
+
+  setTimeout(
+    () =>
+    tone(
+      700,
+      .12,
+      "sine"
+    ),
+    100
+  );
+
+
+  achievementTimer =
+  setTimeout(
+    () =>
+    achievement.classList.remove(
+      "show"
+    ),
+    2300
+  );
+
+}
+
+
+/* =========================
+   PHASE TRANSITION
+========================= */
+
+function phaseTransition(
+  number,
+  title
+) {
+
+  phaseBannerSmall.textContent =
+  "PHASE " + number;
+
+  phaseBannerTitle.textContent =
+  title;
+
+
+  phaseBanner.classList.remove(
+    "show"
+  );
+
+
+  void phaseBanner.offsetWidth;
+
+
+  phaseBanner.classList.add(
+    "show"
+  );
+
+
+  tone(
+    100,
+    .2,
+    "sawtooth"
+  );
+
+
+  vibrate(
+    [35, 45, 35]
+  );
+
+}
+
+
+/* =========================
+   BUTTON MOVEMENT
+========================= */
+
+function clearFakeButtons() {
+
+  document
+  .querySelectorAll(
+    ".fakeButton"
+  )
+  .forEach(
+    element =>
+    element.remove()
+  );
+
+}
+
+
+function clearMovement() {
 
   clearInterval(
     movementTimer
   );
 
-
   movementTimer =
   null;
 
+}
+
+
+function resetButton() {
+
+  clearMovement();
+
+  clearFakeButtons();
 
   redButton.className =
   "";
 
-
   redButton.style
   .setProperty(
     "--size",
-    "170px"
+    "168px"
   );
-
 
   redButton.style.left =
   "50%";
 
   redButton.style.top =
-  "48%";
-
+  "47%";
 
   redButton.textContent =
   "DO NOT\nPRESS";
 
-
-  clearFakeButtons();
-
-
-  warning.classList.add(
-    "hidden"
-  );
+  peaceChoice.style.display =
+  "none";
 
 }
 
-
-/* RANDOM BUTTON POSITION */
 
 function moveButton() {
 
@@ -1629,82 +2459,65 @@ function moveButton() {
   .getBoundingClientRect();
 
 
-  const button =
+  const buttonRect =
   redButton
   .getBoundingClientRect();
 
 
-  const halfWidth =
-  Math.min(
-    button.width / 2,
-    area.width * .35
-  );
-
-
-  const halfHeight =
-  Math.min(
-    button.height / 2,
-    area.height * .35
+  const radius =
+  Math.max(
+    35,
+    buttonRect.width / 2
   );
 
 
   const padding =
-  12;
+  8;
 
 
-  const minimumX =
-  halfWidth + padding;
+  const minX =
+  radius + padding;
 
-
-  const maximumX =
+  const maxX =
   Math.max(
-
-    minimumX,
-
+    minX,
     area.width
-    - halfWidth
+    - radius
     - padding
-
   );
 
 
-  const minimumY =
-  halfHeight + padding;
+  const minY =
+  radius + padding;
 
-
-  const maximumY =
+  const maxY =
   Math.max(
-
-    minimumY,
-
+    minY,
     area.height
-    - halfHeight
+    - radius
     - padding
-
   );
 
 
   const x =
-  minimumX
+  minX
   +
   Math.random()
   *
-  Math.max(
-    1,
-    maximumX
-    - minimumX
+  (
+    maxX
+    - minX
   );
 
 
   const y =
-  minimumY
+  minY
   +
   Math.random()
   *
-  Math.max(
-    1,
-    maximumY
-    - minimumY
+  (
+    maxY
+    - minY
   );
 
 
@@ -1714,78 +2527,59 @@ function moveButton() {
   redButton.style.top =
   y + "px";
 
+
+  moveStarted =
+  performance.now();
+
 }
 
 
-/* RUNAWAY BUTTON */
-
 function runAway(
-  amount = 5,
-  speed = 550
+  moves = 5,
+  speed = 500
 ) {
 
-  clearInterval(
-    movementTimer
-  );
-
-
-  let moves =
-  0;
-
+  clearMovement();
 
   moveButton();
 
 
+  let count =
+  1;
+
+
   movementTimer =
-  setInterval(() => {
+  setInterval(
+    () => {
 
-    moveButton();
+      if (
+        count >= moves
+      ) {
 
-    moves++;
+        clearMovement();
 
+        return;
 
-    if (
-      moves >= amount
-    ) {
-
-      clearInterval(
-        movementTimer
-      );
-
-      movementTimer =
-      null;
+      }
 
 
-      showToast(
-        "Fine. I'll stay still."
-      );
+      moveButton();
 
-    }
+      count++;
 
-  },speed);
+    },
+    speed
+  );
 
 }
 
 
-/* FAKE BUTTONS */
+/* =========================
+   FAKE BUTTONS
+========================= */
 
-function clearFakeButtons() {
-
-  document
-  .querySelectorAll(
-    ".fakeButton"
-  )
-  .forEach(button => {
-
-    button.remove();
-
-  });
-
-}
-
-
-function makeFakeButtons(
-  amount = 6
+function addFakeButtons(
+  amount = 5
 ) {
 
   clearFakeButtons();
@@ -1793,13 +2587,13 @@ function makeFakeButtons(
 
   const labels = [
 
-    "PRESS ME",
-    "WRONG",
-    "SAFE?",
-    "NOT IT",
-    "TRY ME",
+    "PRESS",
     "NOPE",
-    "TOTALLY SAFE"
+    "SAFE",
+    "REAL?",
+    "TRY ME",
+    "WRONG",
+    "THIS ONE"
 
   ];
 
@@ -1815,74 +2609,72 @@ function makeFakeButtons(
     i++
   ) {
 
-    const button =
+    const fake =
     document.createElement(
       "button"
     );
 
 
-    button.type =
+    fake.type =
     "button";
 
-    button.className =
+    fake.className =
     "fakeButton";
 
-    button.textContent =
+    fake.textContent =
     labels[
       i %
       labels.length
     ];
 
 
-    const size =
-    82;
-
-
-    button.style.left =
-    (
-      Math.random()
-      *
-      Math.max(
-        1,
-        area.width
-        - size
-      )
+    fake.style.left =
+    Math.random()
+    *
+    Math.max(
+      1,
+      area.width - 80
     )
     + "px";
 
 
-    button.style.top =
-    (
-      Math.random()
-      *
-      Math.max(
-        1,
-        area.height
-        - size
-      )
+    fake.style.top =
+    Math.random()
+    *
+    Math.max(
+      1,
+      area.height - 80
     )
     + "px";
 
 
-    button.addEventListener(
+    fake.addEventListener(
       "click",
       () => {
 
+        fakeTaps++;
+
+        combo = 0;
+
+        updateHUD();
+
         errorSound();
 
-        vibrate(25);
+        vibrate(20);
 
 
-        const replies =
-        [
+        const replies = [
+
           "Nope.",
-          "Wrong one.",
-          "Nice try.",
-          "That one does nothing."
+          "Wrong button.",
+          "Embarrassing.",
+          "You fell for it.",
+          "That one doesn't even work."
+
         ];
 
 
-        showToast(
+        setMessage(
 
           replies[
             Math.floor(
@@ -1890,16 +2682,35 @@ function makeFakeButtons(
               *
               replies.length
             )
-          ]
+          ],
+
+          "Try again."
 
         );
+
+
+        if (
+          fakeTaps >= 3
+        ) {
+
+          unlock(
+
+            "fake3",
+
+            "WRONG ANSWERS ONLY",
+
+            "Pressed three fake buttons."
+
+          );
+
+        }
 
       }
     );
 
 
     playArea.appendChild(
-      button
+      fake
     );
 
   }
@@ -1910,12 +2721,14 @@ function makeFakeButtons(
 }
 
 
-/* WARNING BOX */
+/* =========================
+   WARNING COUNTDOWN
+========================= */
 
 function showWarning(
   title,
   text,
-  useCountdown = false
+  withCountdown = false
 ) {
 
   warningTitle.textContent =
@@ -1935,98 +2748,100 @@ function showWarning(
   errorSound();
 
 
-  if (!useCountdown) {
+  if (!withCountdown) {
 
-    setTimeout(() => {
-
+    setTimeout(
+      () =>
       warning.classList.add(
         "hidden"
-      );
-
-    },1500);
-
+      ),
+      1500
+    );
 
     return;
 
   }
 
 
-  locked =
-  true;
+  locked = true;
 
 
-  let number =
-  3;
-
+  let number = 3;
 
   countdown.textContent =
   number;
 
 
   const timer =
-  setInterval(() => {
+  setInterval(
+    () => {
 
-    number--;
-
-
-    if (
-      number > 0
-    ) {
-
-      countdown.textContent =
-      number;
-
-      beep(
-        150
-        +
-        number * 50
-      );
-
-    }
-
-    else {
-
-      clearInterval(
-        timer
-      );
+      number--;
 
 
-      countdown.textContent =
-      "0";
+      if (
+        number > 0
+      ) {
 
+        countdown.textContent =
+        number;
 
-      setTimeout(() => {
+        tone(
+          170
+          +
+          number * 40
+        );
 
-        warning.classList.add(
-          "hidden"
+      }
+
+      else {
+
+        clearInterval(
+          timer
         );
 
 
-        locked =
-        false;
+        countdown.textContent =
+        "0";
 
 
-        setMessage(
+        setTimeout(
+          () => {
 
-          "...Nothing happened.",
+            warning.classList.add(
+              "hidden"
+            );
 
-          "I may have oversold that."
+            locked = false;
 
+
+            setMessage(
+
+              "...Nothing happened.",
+
+              "That was less dramatic than expected."
+
+            );
+
+          },
+          500
         );
 
-      },500);
+      }
 
-    }
-
-  },700);
+    },
+    650
+  );
 
 }
 
 
-/* CONFETTI */
+/* =========================
+   PARTICLES
+========================= */
 
-function confetti(
-  amount = 50
+function particles(
+  amount = 55
 ) {
 
   const rect =
@@ -2034,12 +2849,13 @@ function confetti(
   .getBoundingClientRect();
 
 
-  const colors =
-  [
+  const colors = [
+
     "#ffffff",
-    "#ff2929",
-    "#ffb62b",
-    "#63ddff"
+    "#e51b1b",
+    "#ecaa2a",
+    "#777777"
+
   ];
 
 
@@ -2049,34 +2865,33 @@ function confetti(
     i++
   ) {
 
-    const particle =
+    const piece =
     document.createElement(
       "div"
     );
 
 
-    particle.className =
+    piece.className =
     "particle";
 
 
-    particle.style.left =
+    piece.style.left =
     rect.width / 2
     + "px";
 
-
-    particle.style.top =
+    piece.style.top =
     rect.height * .48
     + "px";
 
 
-    particle.style.background =
+    piece.style.background =
     colors[
       i %
       colors.length
     ];
 
 
-    particle.style
+    piece.style
     .setProperty(
 
       "--x",
@@ -2095,7 +2910,7 @@ function confetti(
     );
 
 
-    particle.style
+    piece.style
     .setProperty(
 
       "--y",
@@ -2107,7 +2922,7 @@ function confetti(
       *
       rect.height
       *
-      .7
+      .75
       +
       "px"
 
@@ -2115,165 +2930,92 @@ function confetti(
 
 
     game.appendChild(
-      particle
+      piece
     );
 
 
-    setTimeout(() => {
-
-      particle.remove();
-
-    },1200);
+    setTimeout(
+      () =>
+      piece.remove(),
+      1200
+    );
 
   }
 
 }
 
 
-/* FAKE LOADING */
+/* =========================
+   SECRET PEACE ENDING
+========================= */
 
-function fakeLoading() {
+function schedulePeaceEnding() {
 
-  locked =
-  true;
-
-
-  redButton
-  .classList.add(
-    "hiddenButton"
+  clearTimeout(
+    peaceTimer
   );
 
 
-  const lines = [
-
-    "Deleting consequences…",
-
-    "Rebuilding button…",
-
-    "Pretending this is fine…",
-
-    "Almost definitely done…"
-
-  ];
+  peaceChoice.style.display =
+  "none";
 
 
-  let index =
-  0;
+  if (
+    presses !== 5
+  )
+    return;
 
 
-  setMessage(
+  peaceTimer =
+  setTimeout(
+    () => {
 
-    "LOADING…",
+      if (
+        presses !== 5
+      )
+        return;
 
-    lines[0]
 
+      setMessage(
+
+        "Wait.",
+
+        "Are you... actually stopping?"
+
+      );
+
+
+      peaceChoice.style.display =
+      "block";
+
+    },
+    9000
   );
-
-
-  const timer =
-  setInterval(() => {
-
-    index++;
-
-
-    if (
-      index <
-      lines.length
-    ) {
-
-      subMessage.textContent =
-      lines[index];
-
-      beep(
-        220
-        +
-        index * 30
-      );
-
-    }
-
-    else {
-
-      clearInterval(
-        timer
-      );
-
-
-      setTimeout(() => {
-
-        redButton
-        .classList.remove(
-          "hiddenButton"
-        );
-
-
-        locked =
-        false;
-
-
-        setMessage(
-
-          "Unfortunately, it still works.",
-
-          "Wonderful."
-
-        );
-
-      },400);
-
-    }
-
-  },550);
 
 }
 
 
-/* NORMAL STAGES */
+/* =========================
+   STAGE EVENTS
+========================= */
 
-function stage(
+function runStage(
   number
 ) {
 
-  clearInterval(
-    movementTimer
-  );
-
-
-  movementTimer =
-  null;
-
-
-  clearFakeButtons();
-
-
-  redButton.className =
-  "";
-
-
-  redButton.style
-  .setProperty(
-    "--size",
-    "170px"
-  );
-
-
-  redButton.textContent =
-  "DO NOT\nPRESS";
-
-
   if (
-    stageMessages[
+    lines[
       number - 1
     ]
   ) {
 
     setMessage(
 
-      stageMessages[
+      lines[
         number - 1
       ][0],
 
-      stageMessages[
+      lines[
         number - 1
       ][1]
 
@@ -2285,14 +3027,24 @@ function stage(
   switch(number) {
 
 
-    case 4:
+    /* PHASE 1 */
 
-      shake();
+    case 1:
+
+      unlock(
+
+        "first",
+
+        "CAN'T FOLLOW DIRECTIONS",
+
+        "Pressed the one thing you were told not to."
+
+      );
 
       break;
 
 
-    case 6:
+    case 3:
 
       redButton
       .classList.add(
@@ -2302,48 +3054,49 @@ function stage(
       break;
 
 
-    case 8:
+    case 4:
 
-      flashRed();
+      shake();
 
-      vibrate(
-        [30,40,30]
+      break;
+
+
+    case 5:
+
+      redFlash();
+
+      schedulePeaceEnding();
+
+      break;
+
+
+    /* PHASE 2 */
+
+    case 6:
+
+      phaseTransition(
+        2,
+        "RESISTANCE"
       );
-
-      break;
-
-
-    case 10:
-
-      redButton.textContent =
-      "NEW\nSTRATEGY";
-
-      break;
-
-
-    case 11:
 
       moveButton();
 
       break;
 
 
-    case 12:
+    case 7:
 
-      runAway(
-        5,
-        560
-      );
+      moveButton();
 
       break;
 
 
-    case 13:
+    case 8:
 
       redButton.style
       .setProperty(
         "--size",
-        "125px"
+        "115px"
       );
 
       moveButton();
@@ -2351,7 +3104,7 @@ function stage(
       break;
 
 
-    case 14:
+    case 9:
 
       redButton.style
       .setProperty(
@@ -2359,10 +3112,75 @@ function stage(
         "215px"
       );
 
+      break;
+
+
+    case 10:
+
+      shake();
+
+      unlock(
+
+        "ten",
+
+        "BUTTON BULLY",
+
+        "Pressed it ten times anyway."
+
+      );
+
+      break;
+
+
+    case 11:
+
+      runAway(
+        6,
+        470
+      );
+
+      break;
+
+
+    /* PHASE 3 */
+
+    case 12:
+
+      phaseTransition(
+        3,
+        "DECEPTION"
+      );
+
+      addFakeButtons(
+        4
+      );
+
+      break;
+
+
+    case 13:
+
+      addFakeButtons(
+        6
+      );
+
+      redButton.style
+      .setProperty(
+        "--size",
+        "110px"
+      );
+
+      break;
+
+
+    case 14:
+
       redButton
       .classList.add(
         "rotate"
       );
+
+      moveButton();
 
       break;
 
@@ -2384,16 +3202,21 @@ function stage(
 
     case 16:
 
-      glitch();
+      addFakeButtons(
+        8
+      );
 
       break;
 
 
     case 17:
 
-      redButton
-      .classList.add(
-        "angry"
+      glitch();
+
+      redButton.style
+      .setProperty(
+        "--size",
+        "90px"
       );
 
       moveButton();
@@ -2401,12 +3224,28 @@ function stage(
       break;
 
 
+    /* PHASE 4 */
+
     case 18:
+
+      phaseTransition(
+        4,
+        "MELTDOWN"
+      );
+
+      redFlash();
+
+      shake();
+
+      break;
+
+
+    case 19:
 
       redButton.style
       .setProperty(
         "--size",
-        "70px"
+        "62px"
       );
 
       redButton.textContent =
@@ -2417,30 +3256,38 @@ function stage(
       break;
 
 
-    case 19:
-
-      runAway(
-        7,
-        420
-      );
-
-      break;
-
-
     case 20:
 
-      redButton.textContent =
-      "I AM\nMAD";
-
-      flashRed();
+      runAway(
+        8,
+        360
+      );
 
       break;
 
 
     case 21:
 
-      makeFakeButtons(
-        6
+      locked = true;
+
+      redButton
+      .classList.add(
+        "hiddenButton"
+      );
+
+
+      setTimeout(
+        () => {
+
+          fakeGameOver
+          .classList.remove(
+            "hidden"
+          );
+
+          locked = false;
+
+        },
+        400
       );
 
       break;
@@ -2448,8 +3295,55 @@ function stage(
 
     case 22:
 
-      makeFakeButtons(
-        8
+      redButton
+      .classList.add(
+        "angry"
+      );
+
+      runAway(
+        5,
+        390
+      );
+
+      break;
+
+
+    case 23:
+
+      addFakeButtons(
+        7
+      );
+
+      redButton
+      .classList.add(
+        "rotate"
+      );
+
+      break;
+
+
+    /* PHASE 5 */
+
+    case 24:
+
+      phaseTransition(
+        5,
+        "LAST STRAW"
+      );
+
+      redFlash();
+
+      vibrate(
+        [50, 40, 50]
+      );
+
+      break;
+
+
+    case 25:
+
+      addFakeButtons(
+        9
       );
 
       redButton.style
@@ -2458,109 +3352,64 @@ function stage(
         "95px"
       );
 
-      break;
+      unlock(
 
+        "twentyfive",
 
-    case 23:
+        "STILL HERE?",
 
-      redButton
-      .classList.add(
-        "rotate"
+        "Reached the final phase."
+
       );
-
-      moveButton();
-
-      break;
-
-
-    case 24:
-
-      redButton.style
-      .setProperty(
-        "--size",
-        "64px"
-      );
-
-      redButton.textContent =
-      "DARE";
-
-      moveButton();
-
-      break;
-
-
-    case 25:
-
-      redButton
-      .classList.add(
-        "pulse"
-      );
-
-      redButton.textContent =
-      "PLEASE";
 
       break;
 
 
     case 26:
 
-      fakeLoading();
+      runAway(
+        7,
+        330
+      );
 
       break;
 
 
     case 27:
 
-      locked =
-      true;
+      glitch();
 
+      showWarning(
 
-      redButton
-      .classList.add(
-        "hiddenButton"
+        "DEVICE ANALYSIS",
+
+        "Self-control not detected."
+
       );
-
-
-      setTimeout(() => {
-
-        fakeGameOver
-        .classList.remove(
-          "hidden"
-        );
-
-
-        locked =
-        false;
-
-      },500);
 
       break;
 
 
     case 28:
 
-      redButton
-      .classList.remove(
-        "hiddenButton"
+      redButton.style
+      .setProperty(
+        "--size",
+        "70px"
       );
 
-      moveButton();
+      redButton.textContent =
+      "PLEASE";
 
-      shake();
+      runAway(
+        7,
+        300
+      );
 
       break;
 
 
     case 29:
-
-      showWarning(
-
-        "FINAL WARNING",
-
-        "One more press will definitely destroy everything."
-
-      );
-
 
       redButton
       .classList.add(
@@ -2568,10 +3417,29 @@ function stage(
         "pulse"
       );
 
+      showWarning(
+
+        "FINAL WARNING",
+
+        "One more press will absolutely, definitely ruin everything."
+
+      );
+
       break;
 
 
     case 30:
+
+      unlock(
+
+        "thirty",
+
+        "ABSOLUTELY NO SELF CONTROL",
+
+        "Ignored thirty separate opportunities to stop."
+
+      );
+
 
       finishGame();
 
@@ -2582,12 +3450,237 @@ function stage(
 }
 
 
-/* ENDING */
+/* =========================
+   ENDINGS
+========================= */
+
+function determineEnding() {
+
+
+  if (
+    fakeTaps >= 6
+  ) {
+
+    return {
+
+      title:
+      "CHAOS GOBLIN",
+
+      description:
+      "You didn't just ignore the rules. You enthusiastically pressed buttons that weren't even real.",
+
+      verdict:
+      "ZERO SURVIVAL INSTINCT"
+
+    };
+
+  }
+
+
+  if (
+    maxCombo >= 9
+    &&
+    fakeTaps <= 2
+  ) {
+
+    return {
+
+      title:
+      "BUTTON SLAYER",
+
+      description:
+      "Fast. Accurate. Relentless. The button never stood a chance.",
+
+      verdict:
+      "AGGRESSIVELY EFFICIENT"
+
+    };
+
+  }
+
+
+  if (
+    maxCombo <= 3
+  ) {
+
+    return {
+
+      title:
+      "THE SLOW BURN",
+
+      description:
+      "You took your time, considered your choices, and then made the wrong choice thirty times.",
+
+      verdict:
+      "PREMEDITATED NONSENSE"
+
+    };
+
+  }
+
+
+  return {
+
+    title:
+    "MUTUAL DESTRUCTION",
+
+    description:
+    "The button lost its mind. You lost your self-control. Nobody leaves looking good.",
+
+    verdict:
+    "QUESTIONABLE DECISION MAKING"
+
+  };
+
+}
+
 
 function finishGame() {
 
-  locked =
-  true;
+  locked = true;
+
+  clearMovement();
+
+  clearFakeButtons();
+
+  peaceChoice.style.display =
+  "none";
+
+  redButton
+  .classList.add(
+    "hiddenButton"
+  );
+
+
+  redFlash();
+
+  shake();
+
+  errorSound();
+
+
+  const result =
+  determineEnding();
+
+
+  setTimeout(
+    () => {
+
+      setMessage(
+
+        "You did it.",
+
+        "Thirty presses."
+
+      );
+
+    },
+    650
+  );
+
+
+  setTimeout(
+    () => {
+
+      setMessage(
+
+        "Calculating damage...",
+
+        "This may take a moment."
+
+      );
+
+    },
+    1500
+  );
+
+
+  setTimeout(
+    () => {
+
+      endingTitle.textContent =
+      result.title;
+
+      endingDescription.textContent =
+      result.description;
+
+      endingVerdict.textContent =
+      result.verdict;
+
+
+      endCombo.textContent =
+      "x" + maxCombo;
+
+      endFakes.textContent =
+      fakeTaps;
+
+
+      endCatch.textContent =
+      fastestCatch === null
+      ? "—"
+      : fastestCatch
+      + "ms";
+
+
+      endAchievements.textContent =
+      earned.size;
+
+
+      ending
+      .classList.remove(
+        "hidden"
+      );
+
+
+      particles(
+        65
+      );
+
+      victorySound();
+
+      locked = false;
+
+    },
+    2700
+  );
+
+}
+
+
+function peaceEnding() {
+
+  clearTimeout(
+    peaceTimer
+  );
+
+  locked = true;
+
+  peaceChoice.style.display =
+  "none";
+
+  clearMovement();
+
+  clearFakeButtons();
+
+
+  unlock(
+
+    "peace",
+
+    "ACTUAL SELF CONTROL",
+
+    "You walked away."
+
+  );
+
+
+  setMessage(
+
+    "...wow.",
+
+    "You actually listened."
+
+  );
 
 
   redButton
@@ -2596,85 +3689,186 @@ function finishGame() {
   );
 
 
-  clearFakeButtons();
+  setTimeout(
+    () => {
+
+      endingTitle.textContent =
+      "SECRET PEACE ENDING";
+
+      endingDescription.textContent =
+      "Against all expectations, you simply stopped pressing the button. The button is confused but grateful.";
+
+      endingVerdict.textContent =
+      "EMOTIONALLY MATURE, SOMEHOW";
+
+      endCombo.textContent =
+      "x" + maxCombo;
+
+      endFakes.textContent =
+      fakeTaps;
+
+      endCatch.textContent =
+      fastestCatch === null
+      ? "—"
+      : fastestCatch
+      + "ms";
+
+      endAchievements.textContent =
+      earned.size;
 
 
-  flashRed();
-
-  shake();
-
-  errorSound();
-
-
-  setTimeout(() => {
-
-    setMessage(
-
-      "You did it.",
-
-      ""
-
-    );
-
-  },700);
+      ending
+      .classList.remove(
+        "hidden"
+      );
 
 
-  setTimeout(() => {
+      victorySound();
 
-    setMessage(
+      locked = false;
 
-      "You pressed it 30 times.",
-
-      "After being specifically told not to."
-
-    );
-
-  },1800);
-
-
-  setTimeout(() => {
-
-    endlessUnlocked =
-    true;
-
-
-    localStorage.setItem(
-
-      "redButtonEndless",
-
-      "yes"
-
-    );
-
-
-    updateUI();
-
-
-    confetti(
-      60
-    );
-
-
-    victorySound();
-
-
-    ending
-    .classList.remove(
-      "hidden"
-    );
-
-
-    locked =
-    false;
-
-  },3300);
+    },
+    1500
+  );
 
 }
 
 
-/* ENDLESS MODE */
+/* =========================
+   BUTTON PRESS
+========================= */
 
-function endlessEvent() {
+function pressRedButton() {
+
+  if (locked)
+    return;
+
+
+  const now =
+  performance.now();
+
+
+  /* moving-button catch time */
+
+  if (
+    moveStarted !== null
+  ) {
+
+    const catchTime =
+    Math.round(
+      now - moveStarted
+    );
+
+
+    if (
+      fastestCatch === null
+      ||
+      catchTime < fastestCatch
+    ) {
+
+      fastestCatch =
+      catchTime;
+
+    }
+
+
+    if (
+      catchTime < 650
+    ) {
+
+      unlock(
+
+        "catch",
+
+        "CATCH ME IF YOU CAN",
+
+        "Caught the moving button in under 650ms."
+
+      );
+
+    }
+
+
+    moveStarted =
+    null;
+
+  }
+
+
+  clearTimeout(
+    peaceTimer
+  );
+
+  peaceChoice.style.display =
+  "none";
+
+
+  /* combo */
+
+  if (
+    lastPressTime
+    &&
+    now - lastPressTime
+    < 1800
+  ) {
+
+    combo++;
+
+  }
+
+  else {
+
+    combo = 1;
+
+  }
+
+
+  lastPressTime =
+  now;
+
+
+  maxCombo =
+  Math.max(
+    maxCombo,
+    combo
+  );
+
+
+  if (
+    combo >= 5
+  ) {
+
+    unlock(
+
+      "combo5",
+
+      "IMPULSE CONTROL: FAILED",
+
+      "Built a five-hit combo."
+
+    );
+
+  }
+
+
+  if (
+    combo >= 10
+  ) {
+
+    unlock(
+
+      "combo10",
+
+      "ABSOLUTE MENACE",
+
+      "Reached a ten-hit combo."
+
+    );
+
+  }
+
+
+  clearMovement();
 
   clearFakeButtons();
 
@@ -2682,277 +3876,113 @@ function endlessEvent() {
   redButton.className =
   "";
 
-
   redButton.style
   .setProperty(
     "--size",
-    "150px"
+    "168px"
   );
 
+  redButton.style.left =
+  "50%";
 
-  const messages = [
+  redButton.style.top =
+  "47%";
 
-    [
-      "Still pressing?",
-      "There is no prize."
-    ],
+  redButton.textContent =
+  "DO NOT\nPRESS";
 
-    [
-      "This is a lifestyle now.",
-      "Apparently."
-    ],
 
-    [
-      "You could stop.",
-      "Just mentioning it."
-    ],
+  presses++;
 
-    [
-      "I respect the commitment.",
-      "Not the decision."
-    ],
 
-    [
-      "We are way past reasonable.",
-      "Keep going, I guess."
-    ],
+  if (
+    presses > best
+  ) {
 
-    [
-      "Button addiction is real.",
-      "Source: you."
-    ],
+    best =
+    presses;
 
-    [
-      "This number is getting embarrassing.",
-      "For both of us."
-    ],
-
-    [
-      "I have accepted my fate.",
-      "Press away."
-    ],
-
-    [
-      "Why is this still entertaining?",
-      "Actually, don't answer that."
-    ]
-
-  ];
-
-
-  const text =
-  messages[
-    Math.floor(
-      Math.random()
-      *
-      messages.length
-    )
-  ];
-
-
-  setMessage(
-    text[0],
-    text[1]
-  );
-
-
-  const event =
-  Math.floor(
-    Math.random()
-    * 8
-  );
-
-
-  switch(event) {
-
-
-    case 0:
-
-      moveButton();
-
-      break;
-
-
-    case 1:
-
-      redButton.style
-      .setProperty(
-
-        "--size",
-
-        (
-          70
-          +
-          Math.floor(
-            Math.random()
-            * 90
-          )
-        )
-        +
-        "px"
-
-      );
-
-
-      moveButton();
-
-      break;
-
-
-    case 2:
-
-      runAway(
-
-        3
-        +
-        Math.floor(
-          Math.random()
-          * 5
-        ),
-
-        400
-
-      );
-
-      break;
-
-
-    case 3:
-
-      redButton
-      .classList.add(
-        "rotate"
-      );
-
-      break;
-
-
-    case 4:
-
-      makeFakeButtons(
-
-        4
-        +
-        Math.floor(
-          Math.random()
-          * 5
-        )
-
-      );
-
-      break;
-
-
-    case 5:
-
-      flashRed();
-
-      shake();
-
-      break;
-
-
-    case 6:
-
-      redButton
-      .classList.add(
-        "pulse"
-      );
-
-      moveButton();
-
-      break;
-
-
-    case 7:
-
-      showWarning(
-
-        "STILL GOING?",
-
-        "The button is concerned about you."
-
-      );
-
-      break;
+    saveValue(
+      "redButtonBest",
+      best
+    );
 
   }
 
-}
+
+  updateHUD();
+
+  showCombo();
 
 
-function startEndless() {
-
-  ending
-  .classList.add(
-    "hidden"
+  tone(
+    135
+    +
+    Math.min(
+      presses * 5,
+      160
+    )
   );
 
 
-  playAgainJoke
-  .classList.add(
-    "hidden"
-  );
+  vibrate(18);
 
 
-  fakeGameOver
-  .classList.add(
-    "hidden"
-  );
-
-
-  endless =
-  true;
-
-
-  presses =
-  Math.max(
-    presses,
-    30
-  );
-
-
-  locked =
-  false;
-
-
-  resetButton();
-
-
-  setMessage(
-
-    "ENDLESS MODE",
-
-    "There is no ending. This was your choice."
-
-  );
-
-
-  updateUI();
+  locked = true;
 
 
   setTimeout(
+    () => {
 
-    endlessEvent,
+      locked = false;
 
-    700
+      runStage(
+        presses
+      );
 
+    },
+    90
   );
 
 }
 
 
-/* RESTART */
+/* =========================
+   RESET
+========================= */
 
-function actualRestart() {
+function resetGame() {
 
-  playAgainJoke
-  .classList.add(
-    "hidden"
+  clearMovement();
+
+  clearFakeButtons();
+
+  clearTimeout(
+    peaceTimer
   );
 
 
-  ending
+  presses = 0;
+
+  combo = 0;
+
+  maxCombo = 0;
+
+  fakeTaps = 0;
+
+  fastestCatch = null;
+
+  lastPressTime = 0;
+
+  moveStarted = null;
+
+  locked = false;
+
+  earned =
+  new Set();
+
+
+  warning
   .classList.add(
     "hidden"
   );
@@ -2964,16 +3994,10 @@ function actualRestart() {
   );
 
 
-  endless =
-  false;
-
-
-  presses =
-  0;
-
-
-  locked =
-  false;
+  ending
+  .classList.add(
+    "hidden"
+  );
 
 
   resetButton();
@@ -2988,146 +4012,19 @@ function actualRestart() {
   );
 
 
-  updateUI();
+  updateHUD();
 
 }
 
 
-function restartWithJoke() {
-
-  ending
-  .classList.add(
-    "hidden"
-  );
-
-
-  playAgainJoke
-  .classList.remove(
-    "hidden"
-  );
-
-
-  jokeTitle.textContent =
-  "No.";
-
-
-  jokeText.textContent =
-  "You had your chance.";
-
-
-  setTimeout(() => {
-
-    jokeTitle.textContent =
-    "Fine.";
-
-
-    jokeText.textContent =
-    "But this is the last time. Probably.";
-
-
-    setTimeout(
-
-      actualRestart,
-
-      900
-
-    );
-
-  },1000);
-
-}
-
-
-/* MAIN PRESS */
-
-function pressTheButton() {
-
-  if (locked)
-  return;
-
-
-  locked =
-  true;
-
-
-  beep(
-
-    140
-    +
-    Math.min(
-      presses * 4,
-      120
-    )
-
-  );
-
-
-  vibrate(18);
-
-
-  presses++;
-
-
-  if (
-    presses >
-    highScore
-  ) {
-
-    highScore =
-    presses;
-
-
-    localStorage.setItem(
-
-      "redButtonHighScore",
-
-      String(
-        highScore
-      )
-
-    );
-
-  }
-
-
-  updateUI();
-
-
-  setTimeout(() => {
-
-    locked =
-    false;
-
-
-    if (
-      endless
-      ||
-      presses > 30
-    ) {
-
-      endlessEvent();
-
-    }
-
-    else {
-
-      stage(
-        presses
-      );
-
-    }
-
-  },100);
-
-}
-
-
-/* BUTTON EVENTS */
+/* =========================
+   EVENTS
+========================= */
 
 redButton
 .addEventListener(
   "click",
-  pressTheButton
+  pressRedButton
 );
 
 
@@ -3140,7 +4037,7 @@ soundButton
     !soundOn;
 
 
-    localStorage.setItem(
+    saveValue(
 
       "redButtonSound",
 
@@ -3151,13 +4048,13 @@ soundButton
     );
 
 
-    updateUI();
+    updateHUD();
 
 
     if (soundOn) {
 
-      beep(
-        350,
+      tone(
+        400,
         .08,
         "sine"
       );
@@ -3168,7 +4065,30 @@ soundButton
 );
 
 
-continueButton
+startButton
+.addEventListener(
+  "click",
+  () => {
+
+    intro
+    .classList.add(
+      "hidden"
+    );
+
+
+    resetGame();
+
+
+    tone(
+      170,
+      .1
+    );
+
+  }
+);
+
+
+fakeContinue
 .addEventListener(
   "click",
   () => {
@@ -3187,15 +4107,14 @@ continueButton
 
     setMessage(
 
-      "...Why are you still here?",
+      "...Seriously?",
 
-      "I said GAME OVER."
+      "You ignored the GAME OVER screen too?"
 
     );
 
 
     moveButton();
-
 
     errorSound();
 
@@ -3203,28 +4122,23 @@ continueButton
 );
 
 
-endlessButton
+peaceChoice
 .addEventListener(
   "click",
-  startEndless
-);
-
-
-endlessTop
-.addEventListener(
-  "click",
-  startEndless
+  peaceEnding
 );
 
 
 restartButton
 .addEventListener(
   "click",
-  restartWithJoke
+  () => {
+
+    resetGame();
+
+  }
 );
 
-
-/* KEEP MOVING BUTTON INSIDE SCREEN */
 
 window
 .addEventListener(
@@ -3232,10 +4146,7 @@ window
   () => {
 
     if (
-      redButton
-      .style
-      .left
-      .includes("px")
+      moveStarted !== null
     ) {
 
       moveButton();
@@ -3246,12 +4157,12 @@ window
 );
 
 
-/* START */
+/* INITIAL DISPLAY */
 
-updateUI();
+updateHUD();
 
 })();
 </script>
 
 </body>
-  </html>
+</html>
